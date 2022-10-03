@@ -39,7 +39,7 @@ def delete_author(author_id: UUID, db: Session = Depends(get_db)):
 
 @app.put("/author/", response_model=schemas.Author, status_code=status.HTTP_200_OK)
 def update_author(
-    author_id: UUID, author: schemas.Author, db: Session = Depends(get_db)
+    author_id: UUID, author: schemas.AuthorBase, db: Session = Depends(get_db)
 ):
     return crud.update_author(db, author_id, author)
 
@@ -47,7 +47,7 @@ def update_author(
 @app.post(
     "/author/", response_model=schemas.Author, status_code=status.HTTP_201_CREATED
 )
-def create_author(author: schemas.Author, db: Session = Depends(get_db)):
+def create_author(author: schemas.AuthorBase, db: Session = Depends(get_db)):
     return crud.create_author(db, author)
 
 
@@ -56,6 +56,19 @@ def get_text(text_id: UUID, db: Session = Depends(get_db)):
     return crud.get_text(db, text_id)
 
 
+@app.get("/texts/", response_model=List[schemas.Text], status_code=status.HTTP_200_OK)
+def get_texts(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
+    return crud.get_texts(db, skip, limit)
+
+
 @app.post("/text/", response_model=schemas.Text, status_code=status.HTTP_201_CREATED)
-def create_text(text: schemas.Text, db: Session = Depends(get_db)):
+def create_text(text: schemas.TextBase, db: Session = Depends(get_db)):
     return crud.create_text(db, text)
+
+@app.delete("/text/", response_model=schemas.Text, status_code=status.HTTP_200_OK)
+def delete_text(text_id: UUID, db: Session = Depends(get_db)):
+    return crud.delete_text(db, text_id)
+
+@app.post("/citation/", response_model=schemas.Citation, status_code=status.HTTP_201_CREATED)
+def create_citation(citation: schemas.Citation, db: Session = Depends(get_db)):
+    return crud.create_citation(db, citation)

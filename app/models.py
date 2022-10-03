@@ -17,7 +17,7 @@ text_keywords = Table(
 
 
 text_author = Table(
-    "author_keywords",
+    "text_author",
     Base.metadata,
     Column("author_keywords_id", UUID(as_uuid=True), primary_key=True, default=uuid1),
     Column("text_id", ForeignKey("text.id")),
@@ -51,11 +51,11 @@ class Text(Base):
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
     title = Column(String, index=True)
     year = Column(Integer, nullable=True)
-    n_citation = Column(Integer, nullable=True)
+    n_citation = Column(Integer, nullable=True, default=0)
     abstract = Column(String, nullable=True)
     venue_name = Column(String)
 
-    keywords = relationship("Keyword", secondary=text_keywords, back_populates="texts")
+    keywords = relationship("Keyword", secondary=text_keywords, back_populates="texts", )
     authors = relationship("Author", secondary=text_author, back_populates="texts")
     fos = relationship("Fos", secondary=text_fos, back_populates="texts")
 
@@ -111,6 +111,6 @@ class Org(Base):
     __table_args__ = {"schema": "citation_network"}
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
-    name = Column(String, unique=True)
+    name = Column(String)
 
     authors = relationship("Author", secondary=org_author, back_populates="orgs")
