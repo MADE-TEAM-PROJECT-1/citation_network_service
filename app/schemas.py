@@ -1,26 +1,17 @@
 from typing import Optional, List
-from pydantic import BaseModel
-from uuid import UUID
+from pydantic import BaseModel, Field
+from uuid import UUID, uuid1
 
 
 class Keyword(BaseModel):
-    id: Optional[UUID]
+    id: Optional[UUID] = Field(default_factory=uuid1)
     name: str
 
     class Config:
         orm_mode = True
-
-
-class Author(BaseModel):
-    id: Optional[UUID]
-    name: str
-
-    class Config:
-        orm_mode = True
-
 
 class Fos(BaseModel):
-    id: Optional[UUID]
+    id: Optional[UUID] = Field(default_factory=uuid1)
     name: str
 
     class Config:
@@ -28,23 +19,48 @@ class Fos(BaseModel):
 
 
 class Org(BaseModel):
-    id: Optional[UUID]
+    id: Optional[UUID] = Field(default_factory=uuid1)
     name: str
 
     class Config:
         orm_mode = True
 
 
-class Text(BaseModel):
-    id: Optional[UUID]
+class AuthorBase(BaseModel):
+    name: str
+    orgs: List[Org]
+
+
+class Author(AuthorBase):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+
+    class Config:
+        orm_mode = True
+
+
+class TextBase(BaseModel):
     title: str
-    year: Optional[int] =  None
-    n_citation: Optional[int] = 0
-    abstract: Optional[str] = None
+    year: int
+    abstract: str
     venue_name: str
-    keywords: Optional[List[Keyword]] = []
-    orgs: Optional[Org] = None
-    fos: Optional[List[Fos]] = []
+    keywords: List[Keyword] 
+    authors: List[Author]
+    fos: List[Fos]
+
+    # class Config:
+    #     orm_mode = True
+
+class Text(TextBase):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+    n_citation: int
+
+    class Config:
+        orm_mode = True
+
+
+class Citation(BaseModel):
+    text_id_from: UUID
+    text_id_to: UUID
 
     class Config:
         orm_mode = True
