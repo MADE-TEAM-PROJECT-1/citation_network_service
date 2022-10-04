@@ -1,6 +1,6 @@
 from typing import List
 from sqlalchemy.orm import Session
-import models, schemas
+from app.api import models, schemas
 from uuid import UUID
 from fastapi import HTTPException, status
 
