@@ -4,7 +4,7 @@ from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy import Boolean, Integer, Column, ForeignKey, String, Table
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.associationproxy import association_proxy
-from database import Base
+from app.api.database import Base
 
 
 text_keywords = Table(

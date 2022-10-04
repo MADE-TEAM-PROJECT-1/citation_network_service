@@ -1,15 +1,12 @@
 from typing import List
 
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, status
 from sqlalchemy.orm import Session
+from sqlalchemy.schema import CreateSchema
+from app.core import config
 from uuid import UUID
-import crud, models, schemas
-from database import SessionLocal, engine
-
-
-models.Base.metadata.create_all(bind=engine)
-
-app = FastAPI()
+from app.api import crud, models, schemas
+from app.api.database import SessionLocal, engine
 
 
 def get_db():
@@ -18,6 +15,13 @@ def get_db():
         yield db
     finally:
         db.close()
+
+
+app = FastAPI()
+
+if not engine.dialect.has_schema(engine, config.SCHEMA_NAME):
+    engine.execute(CreateSchema(config.SCHEMA_NAME))
+models.Base.metadata.create_all(bind=engine)
 
 
 @app.get("/author/", response_model=schemas.Author, status_code=status.HTTP_200_OK)
@@ -65,10 +69,14 @@ def get_texts(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
 def create_text(text: schemas.TextBase, db: Session = Depends(get_db)):
     return crud.create_text(db, text)
 
+
 @app.delete("/text/", response_model=schemas.Text, status_code=status.HTTP_200_OK)
 def delete_text(text_id: UUID, db: Session = Depends(get_db)):
     return crud.delete_text(db, text_id)
 
-@app.post("/citation/", response_model=schemas.Citation, status_code=status.HTTP_201_CREATED)
+
+@app.post(
+    "/citation/", response_model=schemas.Citation, status_code=status.HTTP_201_CREATED
+)
 def create_citation(citation: schemas.Citation, db: Session = Depends(get_db)):
     return crud.create_citation(db, citation)
