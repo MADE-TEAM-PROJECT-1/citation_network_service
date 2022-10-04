@@ -58,6 +58,7 @@ class Text(TextBase):
         orm_mode = True
 
 
+
 class Citation(BaseModel):
     text_id_from: UUID
     text_id_to: UUID

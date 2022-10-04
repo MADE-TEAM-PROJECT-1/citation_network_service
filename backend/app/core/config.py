@@ -17,3 +17,4 @@ DATABASE_URL = config(
     default=f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}",
 )
 SCHEMA_NAME = config("SCHEMA_NAME", cast=str, default='citation_network')
+THREADS_LIMIT = config("THREADS_LIMIT", cast=int, default=5)
