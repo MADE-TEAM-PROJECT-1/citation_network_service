@@ -5,9 +5,6 @@ from app.core import config
 
 from app.core.config import DATABASE_URL
 
-PG_DB_URL = "postgresql://postgres:adminla21@localhost/citation_network_db"
-
-# engine = create_engine(PG_DB_URL, echo=True)
 engine = create_engine(DATABASE_URL, echo=True)
 
 SessionLocal = sessionmaker(bind=engine)
