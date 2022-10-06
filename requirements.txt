@@ -1,0 +1,2 @@
+pandas==1.2.4
+sqlalchemy==1.4.22
