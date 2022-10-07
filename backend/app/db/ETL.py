@@ -1,13 +1,26 @@
+import json
 import pandas as pd
 from sqlalchemy import create_engine
 import uuid
+import gdown
+from zipfile import ZipFile
+import os
+import shutil
 
+
+url = 'https://drive.google.com/file/d/1yjeG6-kIpjoxFA75M5wUuHlsmJhpGnfw/view?usp=sharing'
+gdown.download(url=url, output="data.zip", quiet=False, fuzzy=True)
+
+with ZipFile('data.zip', 'r') as zip_file:
+    zip_file.extractall()
+os.remove('data.zip')
 
 engine = create_engine('postgresql://postgres:postgres@0.0.0.0:5432/postgres')
+
 df = pd.DataFrame()
 for i in range(1,4):
     df = pd.concat([df, pd.read_json('data/part_'+str(i)+'_clean.json')], ignore_index=True)
-    
+
 df = df.rename(columns = {'venue' : 'venue_name'})
 df['venue_name'] = df['venue_name'].apply(lambda x: list(x.values()))
 
@@ -132,3 +145,5 @@ for UUID_id, references in zip(df['UUID_id'], df['references']):
             tmp_l.append((uuid.uuid4(),UUID_id,id_dict[ref]))       
 df_citation = pd.DataFrame(tmp_l, columns=['citation_id', 'text_id_from', 'text_id_to'])
 df_citation.to_sql('citation', con=engine, schema='citation_network', if_exists='append', index=False)
+
+shutil.rmtree('data')
