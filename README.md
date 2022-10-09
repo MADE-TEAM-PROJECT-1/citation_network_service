@@ -25,3 +25,9 @@
 - PostgresDB
 - Docker
 - SQLAlchemy
+
+## Contribution Guide
+1. Создайте новую ветку от develop
+2. Внести изменения и запушьте
+3. Создайте Pull Request в develop
+4. Дождитесь ревью
