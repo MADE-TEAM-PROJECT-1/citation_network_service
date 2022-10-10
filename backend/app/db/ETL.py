@@ -69,7 +69,7 @@ tmp_l = []
 for i in df['authors']:
     l_local = []
     for j in i:
-        if 'org' in j.keys():
+        if 'org' in j.keys() and j['org'] != []:
             if j['org'] not in org_dict:
                 u = uuid.uuid4()
                 org_dict[j['org']] = u
