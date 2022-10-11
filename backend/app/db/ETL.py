@@ -112,7 +112,7 @@ df_fos.to_sql('fos', con=engine, schema='citation_network', if_exists='append', 
 # filling in the table "text_fos"
 df_text_fos = df_text_fos_fosid[['text_fos_fosid','UUID_fos','UUID_id']]
 df_text_fos.columns = ['text_fos_id','fos_id','text_id']
-df_text_fos.to_sql('text_fos', con=engine, schema='citation_network', if_exists='append', index=False)
+df_text_fos.to_sql('text_fos', con=engine, schema='citation_network', if_exists='append', index=False, chunksize=200000)
 
 
 # filling in the table "keywords"
@@ -127,13 +127,13 @@ df_text_keywords_keywordsid = pd.DataFrame(tmp_l, columns=['text_keywords_keywor
 df_keywords = df_text_keywords_keywordsid[['UUID_keywords','keywords']]
 df_keywords.columns = ['id','name']
 df_keywords = df_keywords.drop_duplicates()
-df_keywords.to_sql('keywords', con=engine, schema='citation_network', if_exists='append', index=False)
+df_keywords.to_sql('keywords', con=engine, schema='citation_network', if_exists='append', index=False, chunksize=200000)
 
 
 # filling in the table "text_keywords"
 df_text_keywords = df_text_keywords_keywordsid[['text_keywords_keywordsid','UUID_keywords','UUID_id']]
 df_text_keywords.columns = ['text_keywords_id','keyword_id','text_id']
-df_text_keywords.to_sql('text_keywords', con=engine, schema='citation_network', if_exists='append', index=False)
+df_text_keywords.to_sql('text_keywords', con=engine, schema='citation_network', if_exists='append', index=False, chunksize=200000)
 
 
 # filling in the table "citation"
@@ -144,6 +144,6 @@ for UUID_id, references in zip(df['UUID_id'], df['references']):
         if ref in id_dict:
             tmp_l.append((uuid.uuid4(),UUID_id,id_dict[ref]))       
 df_citation = pd.DataFrame(tmp_l, columns=['citation_id', 'text_id_from', 'text_id_to'])
-df_citation.to_sql('citation', con=engine, schema='citation_network', if_exists='append', index=False)
+df_citation.to_sql('citation', con=engine, schema='citation_network', if_exists='append', index=False, chunksize=200000)
 
 shutil.rmtree('data')
