@@ -105,3 +105,8 @@ def delete_text(text_id: UUID):
 def create_citation(citation: schemas.Citation):
     with SessionManager() as db:
         return schemas.Citation.from_orm(crud.create_citation(db, citation))
+
+@app.get("/search/", response_model=List[schemas.Search], status_code=status.HTTP_200_OK)
+def get_search(request, limit = 30):
+    with SessionManager() as db:
+        return [schemas.Search.from_orm(request) for request in crud.get_search(db, request, limit)]
