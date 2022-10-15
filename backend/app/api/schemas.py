@@ -58,10 +58,20 @@ class Text(TextBase):
         orm_mode = True
 
 
-
 class Citation(BaseModel):
     text_id_from: UUID
     text_id_to: UUID
 
+    class Config:
+        orm_mode = True
+
+        
+class Search(BaseModel):
+    title: str
+    year: int
+    abstract: str
+    venue_name: str
+    authors: List[Author]
+    
     class Config:
         orm_mode = True
