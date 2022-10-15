@@ -74,7 +74,7 @@ def get_or_create_fos(db: Session, fos_list: List[schemas.Fos]):
 def get_text(db: Session, text_id: UUID):
     text = db.query(models.Text).filter(models.Text.id == text_id).first()
 
-    if text in None:
+    if text is None:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Text not found"
         )
