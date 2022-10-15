@@ -37,8 +37,6 @@ async def startup_event():
     models.Base.metadata.create_all(bind=engine)
 
 
-
-
 @app.get("/author/", response_model=schemas.Author, status_code=status.HTTP_200_OK)
 def get_author(author_id: UUID):
     with SessionManager() as db:
@@ -105,6 +103,7 @@ def delete_text(text_id: UUID):
 def create_citation(citation: schemas.Citation):
     with SessionManager() as db:
         return schemas.Citation.from_orm(crud.create_citation(db, citation))
+
 
 @app.get("/search/", response_model=List[schemas.Search], status_code=status.HTTP_200_OK)
 def get_search(request, limit = 30):
