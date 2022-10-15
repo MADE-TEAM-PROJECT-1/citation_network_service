@@ -209,3 +209,28 @@ def create_citation(db: Session, citation: schemas.Citation):
     db.commit()
 
     return new_citation
+
+
+def get_search(db: Session, request: str, limit):
+    title_ans = db.query(models.Text).filter(models.Text.title.contains(request)).limit(limit).all()
+    if title_ans != []:
+        return title_ans
+    else:
+        author_ans = db.query(models.Text).filter(models.Author.name.contains(request)).limit(limit).all() 
+        
+    if author_ans != []:
+        return author_ans
+    else:
+        venue_ans = db.query(models.Text).filter(models.Text.venue_name.contains(request)).limit(limit).all() 
+
+    if venue_ans != []:
+        return venue_ans
+    else:
+        keyword_ans = db.query(models.Text).filter(models.Keyword.name.contains(request)).limit(limit).all()
+        
+    if keyword_ans != []:
+        return keyword_ans
+    else:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Nothing found"
+        )
