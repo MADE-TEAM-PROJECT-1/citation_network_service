@@ -3,7 +3,66 @@ from sqlalchemy.orm import Session
 from app.api import models, schemas
 from uuid import UUID
 from fastapi import HTTPException, status
+from passlib import context
 
+class Hasher():
+    
+    def __init__(self):
+        self.pwd_context = context.CryptContext(schemes=["sha256_crypt"], deprecated="auto")
+
+    def verify_password(self, plain_password, hashed_password):
+        return self.pwd_context.verify(plain_password, hashed_password)
+
+    def get_password_hash(self, password):
+        return self.pwd_context.hash(password)
+
+
+def get_user_by_login(db: Session, login: str):
+    return  db.query(models.User).filter(models.User.login == login).first()
+    
+def get_user_by_id(db: Session, id: UUID):
+    return  db.query(models.User).filter(models.User.id == id).first()
+
+def try_add_user(db: Session, user: schemas.User):
+    password_hasher = Hasher()
+    user_candidate = get_user_by_login(db, user.login)
+    if user_candidate is not None:
+         raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="User with this login already exist",
+        )
+    real_hash = password_hasher.get_password_hash(user.password_hash)
+    new_user = models.User(login=user.login, password_hash=real_hash, email=user.email)
+    db.add(new_user)
+    db.commit()
+    return new_user
+
+def try_login(db: Session, login: str, password: str):
+    password_hasher = Hasher()
+    user_candidate = get_user_by_login(db, login)
+    if user_candidate is None:
+         raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No user with this login",
+        )
+    if not password_hasher.verify_password(password,user_candidate.password_hash):
+          raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No user with this password:(",
+        )
+    return user_candidate
+
+def change_password(db: Session, User_id: UUID, new_password: str):
+    password_hasher = Hasher()
+    user = get_user_by_id(db, User_id)
+    if user is None:
+         raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No user with this ID",
+        )
+    user.password_hash = password_hasher.get_password_hash(new_password)
+    db.commit()
+    return user
 
 def get_or_create_orgs(db: Session, orgs: List[schemas.Org]):
     new_orgs = []

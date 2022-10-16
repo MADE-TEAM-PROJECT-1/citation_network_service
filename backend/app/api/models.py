@@ -114,3 +114,14 @@ class Org(Base):
     name = Column(String)
 
     authors = relationship("Author", secondary=org_author, back_populates="orgs")
+
+class User(Base):
+    __tablename__ = "user"
+    __table_args__ = {"schema": "citation_network"}
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+
+    login = Column(String, index = True, unique=True, nullable=False)
+    password_hash = Column(String, nullable=False)
+    author_id = Column(UUID(as_uuid=True), ForeignKey("author.id"))
+    email = Column(String)

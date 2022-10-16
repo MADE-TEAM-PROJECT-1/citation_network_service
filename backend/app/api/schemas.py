@@ -65,3 +65,13 @@ class Citation(BaseModel):
 
     class Config:
         orm_mode = True
+
+class User(BaseModel):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+    login: str
+    password_hash: str
+    email: str
+    author_id = UUID 
+
+    class Config:
+        orm_mode = True

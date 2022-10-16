@@ -1,3 +1,4 @@
+
 from typing import List
 
 from fastapi import FastAPI, Depends, status
@@ -30,6 +31,7 @@ class SessionManager:
 
 app = FastAPI()
 
+
 @app.on_event("startup")
 async def startup_event():
     if not engine.dialect.has_schema(engine, SCHEMA_NAME):
@@ -37,6 +39,26 @@ async def startup_event():
     models.Base.metadata.create_all(bind=engine)
 
 
+@app.post("/users/registration/", status_code=status.HTTP_200_OK)
+def register_user(user: schemas.User):
+    with SessionManager() as db:
+        return schemas.User.from_orm(crud.try_add_user(db, user))
+
+
+@app.get("/users/get_user/",response_model = schemas.User, status_code=status.HTTP_200_OK)
+def get_user(login: str):
+    with SessionManager() as db:
+        return schemas.User.from_orm(crud.get_user_by_login(db, login))
+
+@app.post("/users/login_user/", status_code=status.HTTP_200_OK)
+def login_user(login :str, password :str):
+    with SessionManager() as db:
+        return schemas.User.from_orm(crud.try_login(db, login, password))
+
+@app.put("/users/change_password", response_model=schemas.User, status_code=status.HTTP_200_OK)
+def change_password( User_id: UUID, new_password: str):
+    with SessionManager() as db:
+        return schemas.User.from_orm(crud.change_password(db, User_id, new_password))
 
 
 @app.get("/author/", response_model=schemas.Author, status_code=status.HTTP_200_OK)
