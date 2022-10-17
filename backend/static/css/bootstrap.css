@@ -1,0 +1,94 @@
+ul.list-listings {
+    margin: 0 0 20px 0;
+    padding: 0;
+    list-style: none;
+  }
+  
+  ul.list-listings>li {
+    margin-bottom: 30px;
+    border: 1px solid #e0eded;
+    border-radius: 2px;
+  }
+  
+  ul.list-listings .listing-image {
+    width: 30%;
+    display: table-cell;
+  }
+  
+  ul.list-listings .listing-image img {
+    border-bottom-left-radius: 2px;
+  }
+  
+  ul.list-listings .listing-body {
+    padding: 10px 15px;
+    display: table-cell;
+    vertical-align: top;
+  }
+  
+  ul.list-listings .listing-body h3 {
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 25px;
+  }
+  
+  ul.list-listings .listing-body p {
+    margin: 5px 0;
+  }
+  
+  ul.list-listings .listing-body .meta-info {
+    border-top: 1px solid #e0eded;
+    padding-top: 7px;
+  }
+  
+  ul.list-listings .listing-body .meta-info ul {
+    width: 100%;
+    display: table;
+    table-layout: auto;
+  }
+  
+  ul.list-listings .listing-body .meta-info ul li {
+    display: table-cell;
+    border-right: 1px solid #e0eded;
+    text-align: center;
+  }
+  
+  ul.list-listings .listing-body .meta-info ul li i {
+    color: #333;
+    margin-right: 5px;
+  }
+  
+  ul.list-listings .listing-body {
+    padding: 10px 15px;
+    display: table-cell;
+    vertical-align: top;
+  }
+  
+  .bg-base {
+    background: #3498db;
+    color: #fff;
+  }
+  
+  ul.list-listings>li.featured {
+    border-color: #3498db;
+  }
+  
+  ul.list-listings>li {
+    margin-bottom: 30px;
+    border: 1px solid #e0eded;
+    border-radius: 2px;
+  }
+  
+  ul.list-listings>li:before, ul.list-listings li:after {
+    content: "";
+    display: table;
+  }
+  
+  ul.list-listings .listing-header {
+    display: block;
+    clear: both;
+    padding: 8px 15px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
