@@ -1,5 +1,5 @@
 from typing import List
-from urllib import request
+from urllib import request, response
 
 from fastapi import FastAPI, status
 from fastapi.templating import Jinja2Templates
@@ -47,6 +47,9 @@ def register_user(request: Request, user: schemas.User):
 def login_page(request: Request):
     return templates.TemplateResponse("login_page.html", {"request": request})
 
+@app.get("/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+def homepage(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
 
 @app.get(
     "/users/get_user/", response_model=schemas.User, status_code=status.HTTP_200_OK
