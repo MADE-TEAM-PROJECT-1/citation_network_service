@@ -39,9 +39,13 @@ async def startup_event():
 
 
 @app.post("/users/registration/", status_code=status.HTTP_200_OK)
-def register_user(user: schemas.User):
+def register_user(request: Request, user: schemas.User):
     with SessionManager() as db:
         return schemas.User.from_orm(crud.try_add_user(db, user))
+
+@app.get("/users/registration/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+def login_page(request: Request):
+    return templates.TemplateResponse("login_page.html", {"request": request})
 
 
 @app.get(
@@ -110,14 +114,10 @@ def get_text(request: Request, text_id: UUID):
     with SessionManager() as db:
         text = crud.get_text(db, text_id)
         return templates.TemplateResponse(
-            "texts.html",
+            "text.html",
             {
                 "request" : request,
-                "title": text.title,
-                "year": text.year,
-                "author": text.authors[0].name,
-                "n_citation": text.n_citation,
-                "abstract" : text.abstract
+                "text" : text
             },
         )
 

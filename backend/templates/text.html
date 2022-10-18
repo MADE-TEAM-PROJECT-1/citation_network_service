@@ -1,0 +1,40 @@
+<link href="{{ url_for('static', path='/css/text.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', path='/css/font-awesome.min.css') }}" rel="stylesheet">
+
+<div class="container">
+    <div class="row align-items-center justify-content-around flex-row-reverse">
+        <div class="col-lg-6">
+            <div class="about-text">
+                <h3 class="dark-color"> {{ text.title }}</h3>
+                <h4 class="blue-color">
+                    {% for author in  text.authors %}
+                    <i class="fa fa-user"></i>  {{ author.name }}, {{author.orgs[0].name}}{% if not loop.last %};{% endif %}
+                    {% endfor %}
+                </h4>
+                <h4 class="dark-color"> <i class="fa fa-book" aria-hidden="true"></i> {{ text.venue_name }}, {{ text.year }} </h4>
+                <div>
+                    <h5>
+                        <i class="fa fa-key" aria-hidden="true"></i> 
+                        Keywords:  
+                        {% for keyword in text.keywords %}
+                        {{ keyword.name }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </h5>
+                </div>
+                <div>
+                    <h5>
+                        <i class="fa fa-graduation-cap" aria-hidden="true"></i>
+                        Fields of study:  
+                        {% for fos in text.fos %}
+                        {{ fos.name }}{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </h5>
+                </div>
+                <p> {{ text.abstract }} </p>
+                <div class="btn-bar">
+                    <a class="px-btn theme" href="#"> <i class="fa fa-heart-o"></i> Like </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
