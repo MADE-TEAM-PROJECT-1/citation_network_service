@@ -2,13 +2,14 @@
 <link href="{{ url_for('static', path='/css/bootstrap.css') }}" rel="stylesheet">
 
 <div class="container bootstrap snippets bootdey">
+    <h1> Articles </h1>
     <div class="row">
         <div class="col-md-8">
             <ul class="list-listings">
                 {% for text in texts %}
                 <li class="">
                     <div class="listing-body">
-                        <h3><a href="#">{{ text.title }}</a></h3>
+                        <h3><a href="http://localhost:8000/text/?text_id={{ text.id }}">{{ text.title }}</a></h3>
                         <h4>{{ text.venue_name }} </h4>
                         <p>
                             {{ text.abstract }}
@@ -16,9 +17,9 @@
                         <div class="meta-info">
                             <ul>
                                 <li><i class="fa fa-calendar"></i> <small> {{ text.year }} </small></li>
-                                <li><i class="fa fa-user"></i> <small>By <a href="#"> {{ text.authors[0].name }}</a></small></li>
+                                <li><i class="fa fa-user"></i> <small> By {{ text.authors[0].name }} </small></li>
                                 <li><i class="fa fa-comment"></i> <small> {{ text.n_citation }} citations </small></li>
-                                <li class="stretch text-right"><a href="#" class=""> Read more </a></li>
+                                <li class="stretch text-right"><a href="http://localhost:8000/text/?text_id={{ text.id }}" class=""> Read more </a></li>
                             </ul>
                         </div>
                     </div>
@@ -28,64 +29,3 @@
         </div>
     </div>
 </div>
-
-<!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"> -->
-<!-- <div class="container bootstrap snippets bootdey">
-    <div class="row">
-    <div class="col-md-8">
-        <ul class="list-listings">
-            <li class="featured">
-                <div class="listing-header bg-base">
-                    Featured listing
-                </div>
-                <div class="listing-body">
-                    <h3><a href="#">Fortitor Posuere &amp; Praesent Metus Ins</a></h3>
-                    <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisg elitm Ut tincidunt purus iaculis ipsum dctum non dtum quam consectetur adipisg elitm Ut tincidunt, Ut tincidunt purus iaculis ipsum dctum non dtum quam consectetur adipisg elitm Ut tincidunt.
-                    </p>
-                    <div class="meta-info">
-                        <ul>
-                            <li><i class="fa fa-calendar"></i> <small>23 July 2014</small></li>
-                            <li><i class="fa fa-user"></i> <small>By <a href="#">Alex Smith</a></small></li>
-                            <li><i class="fa fa-comment"></i> <small>10 comments</small></li>
-                            <li class="stretch text-right"><a href="#" class="">Read more</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </li>
-            <li class="">
-                <div class="listing-body">
-                    <h3><a href="#">Fortitor Posuere &amp; Praesent Metus Ins</a></h3>
-                    <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisg elitm Ut tincidunt purus iaculis ipsum dctum non dtum quam consectetur adipisg elitm Ut tincidunt, Ut tincidunt purus iaculis ipsum dctum non dtum quam consectetur adipisg elitm Ut tincidunt.
-                    </p>
-                    <div class="meta-info">
-                        <ul>
-                            <li><i class="fa fa-calendar"></i> <small>23 July 2014</small></li>
-                            <li><i class="fa fa-user"></i> <small>By <a href="#">Alex Smith</a></small></li>
-                            <li><i class="fa fa-comment"></i> <small>10 comments</small></li>
-                            <li class="stretch text-right"><a href="#" class="">Read more</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </li>
-            <li class="">
-                <div class="listing-body">
-                    <h3><a href="#">Fortitor Posuere &amp; Praesent Metus Ins</a></h3>
-                    <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisg elitm Ut tincidunt purus iaculis ipsum dctum non dtum quam consectetur adipisg elitm Ut tincidunt, Ut tincidunt purus iaculis ipsum dctum non dtum quam consectetur adipisg elitm Ut tincidunt.
-                    </p>
-                    <div class="meta-info">
-                        <ul>
-                            <li><i class="fa fa-calendar"></i> <small>23 July 2014</small></li>
-                            <li><i class="fa fa-user"></i> <small>By <a href="#">Alex Smith</a></small></li>
-                            <li><i class="fa fa-comment"></i> <small>10 comments</small></li>
-                            <li class="stretch text-right"><a href="#" class="">Read more</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </li>
-        </ul> 
-    </div>
-  </div>
-</div> -->
