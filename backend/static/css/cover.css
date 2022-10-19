@@ -11,8 +11,8 @@
   text-shadow: none; /* Prevent inheritance from `body` */
 }
 .user-avatar {
-  width: 500px;
-  height: 500px;
+  width: 400px;
+  height: 400px;
   background-color: transparent;
   border: 0px;
 }

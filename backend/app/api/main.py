@@ -43,9 +43,9 @@ def register_user(request: Request, user: schemas.User):
     with SessionManager() as db:
         return schemas.User.from_orm(crud.try_add_user(db, user))
 
-@app.get("/users/registration/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+@app.get("/login", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 def login_page(request: Request):
-    return templates.TemplateResponse("login_page.html", {"request": request})
+    return templates.TemplateResponse("signin.html", {"request": request})
 
 @app.get("/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 def homepage(request: Request):
@@ -136,7 +136,7 @@ def get_texts(request: Request, skip: int = 0, limit: int = 10):
         texts = crud.get_texts(db, skip, limit)
 
         return templates.TemplateResponse(
-            "texts.html", {"request" : request, "texts": texts}
+            "list-articles.html", {"request" : request, "texts": texts}
         )
 
 
