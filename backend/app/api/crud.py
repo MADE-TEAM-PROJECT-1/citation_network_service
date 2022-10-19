@@ -23,16 +23,16 @@ def get_user_by_login(db: Session, login: str):
 def get_user_by_id(db: Session, id: UUID):
     return  db.query(models.User).filter(models.User.id == id).first()
 
-def try_add_user(db: Session, user: schemas.User):
+def try_add_user(db: Session, login: str,password: str,email: str ):
     password_hasher = Hasher()
-    user_candidate = get_user_by_login(db, user.login)
+    user_candidate = get_user_by_login(db, login)
     if user_candidate is not None:
          raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User with this login already exist",
         )
-    real_hash = password_hasher.get_password_hash(user.password_hash)
-    new_user = models.User(login=user.login, password_hash=real_hash, email=user.email)
+    real_hash = password_hasher.get_password_hash(password)
+    new_user = models.User(login=login, password_hash=real_hash, email=email)
     db.add(new_user)
     db.commit()
     return new_user
