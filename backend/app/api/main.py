@@ -1,21 +1,18 @@
-
 from typing import List
+from urllib import request, response
 
-from fastapi import FastAPI, Depends, status
+from fastapi import FastAPI, status
+from fastapi.templating import Jinja2Templates
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi import FastAPI, Request
+
 from sqlalchemy.schema import CreateSchema
 
 from uuid import UUID
 from app.api import crud, models, schemas
 from app.api.database import SessionLocal, engine
 from app.core.config import SCHEMA_NAME
-
-
-# def get_db():
-#     db = SessionLocal()
-#     try:
-#         yield db
-#     finally:
-#         db.close()
 
 
 class SessionManager:
@@ -30,6 +27,8 @@ class SessionManager:
 
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
 
 
 @app.on_event("startup")
@@ -40,23 +39,38 @@ async def startup_event():
 
 
 @app.post("/users/registration/", status_code=status.HTTP_200_OK)
-def register_user(login: str, password : str, email : str):
+def register_user(request: Request, user: schemas.User):
     with SessionManager() as db:
         return schemas.User.from_orm(crud.try_add_user(db, login, password, email))
 
+@app.get("/login", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+def login_page(request: Request):
+    return templates.TemplateResponse("signin.html", {"request": request})
 
-@app.get("/users/get_user/",response_model = schemas.User, status_code=status.HTTP_200_OK)
+@app.get("/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+def homepage(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get(
+    "/users/get_user/", response_model=schemas.User, status_code=status.HTTP_200_OK
+)
 def get_user(login: str):
     with SessionManager() as db:
         return schemas.User.from_orm(crud.get_user_by_login(db, login))
 
+
 @app.post("/users/login_user/", status_code=status.HTTP_200_OK)
-def login_user(login :str, password :str):
+def login_user(login: str, password: str):
     with SessionManager() as db:
         return schemas.User.from_orm(crud.try_login(db, login, password))
 
-@app.put("/users/change_password", response_model=schemas.User, status_code=status.HTTP_200_OK)
-def change_password( User_id: UUID, new_password: str):
+
+@app.put(
+    "/users/change_password",
+    response_model=schemas.User,
+    status_code=status.HTTP_200_OK,
+)
+def change_password(User_id: UUID, new_password: str):
     with SessionManager() as db:
         return schemas.User.from_orm(crud.change_password(db, User_id, new_password))
 
@@ -72,7 +86,10 @@ def get_author(author_id: UUID):
 )
 def get_authors(skip: int = 0, limit: int = 10):
     with SessionManager() as db:
-        return [schemas.Author.from_orm(author) for author in crud.get_authors(db, skip, limit)]
+        return [
+            schemas.Author.from_orm(author)
+            for author in crud.get_authors(db, skip, limit)
+        ]
 
 
 @app.delete("/author/", response_model=schemas.Author, status_code=status.HTTP_200_OK)
@@ -82,9 +99,7 @@ def delete_author(author_id: UUID):
 
 
 @app.put("/author/", response_model=schemas.Author, status_code=status.HTTP_200_OK)
-def update_author(
-    author_id: UUID, author: schemas.AuthorBase
-):
+def update_author(author_id: UUID, author: schemas.AuthorBase):
     with SessionManager() as db:
         return schemas.Author.from_orm(crud.update_author(db, author_id, author))
 
@@ -97,16 +112,32 @@ def create_author(author: schemas.AuthorBase):
         return schemas.Author.from_orm(crud.create_author(db, author))
 
 
-@app.get("/text/", response_model=schemas.Text, status_code=status.HTTP_200_OK)
-def get_text(text_id: UUID):
+@app.get("/text/", response_model=schemas.Text, response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+def get_text(request: Request, text_id: UUID):
     with SessionManager() as db:
-        return schemas.Text.from_orm(crud.get_text(db, text_id))
+        text = crud.get_text(db, text_id)
+        return templates.TemplateResponse(
+            "text.html",
+            {
+                "request" : request,
+                "text" : text
+            },
+        )
+
+
+@app.get("/items/{id}", response_class=HTMLResponse)
+async def read_item(request: Request, id: str):
+    return templates.TemplateResponse("item.html", {"request": request, "id": id})
 
 
 @app.get("/texts/", response_model=List[schemas.Text], status_code=status.HTTP_200_OK)
-def get_texts(skip: int = 0, limit: int = 10):
+def get_texts(request: Request, skip: int = 0, limit: int = 10):
     with SessionManager() as db:
-        return [schemas.Text.from_orm(text) for text in crud.get_texts(db, skip, limit)]
+        texts = crud.get_texts(db, skip, limit)
+
+        return templates.TemplateResponse(
+            "list-articles.html", {"request" : request, "texts": texts}
+        )
 
 
 @app.post("/text/", response_model=schemas.Text, status_code=status.HTTP_201_CREATED)
@@ -129,7 +160,12 @@ def create_citation(citation: schemas.Citation):
         return schemas.Citation.from_orm(crud.create_citation(db, citation))
 
 
-@app.get("/search/", response_model=List[schemas.Search], status_code=status.HTTP_200_OK)
-def get_search(request, limit = 30):
+@app.get(
+    "/search/", response_model=List[schemas.Search], status_code=status.HTTP_200_OK
+)
+def get_search(request, limit=30):
     with SessionManager() as db:
-        return [schemas.Search.from_orm(request) for request in crud.get_search(db, request, limit)]
+        return [
+            schemas.Search.from_orm(request)
+            for request in crud.get_search(db, request, limit)
+        ]
