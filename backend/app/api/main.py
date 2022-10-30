@@ -41,7 +41,7 @@ async def startup_event():
 @app.post("/users/registration/", status_code=status.HTTP_200_OK)
 def register_user(request: Request, user: schemas.User):
     with SessionManager() as db:
-        return schemas.User.from_orm(crud.try_add_user(db, user))
+        return schemas.User.from_orm(crud.try_add_user(db, login, password, email))
 
 @app.get("/login", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 def login_page(request: Request):
