@@ -64,27 +64,60 @@
     <link href="signin.css" rel="stylesheet">
   </head>
   <body class="text-center">
-    
-<main class="form-signin w-100 m-auto">
-  <form action="http://localhost:8000/users/registration/" method="GET">
-    <img class="mb-4" src="/static/images/graph.png" alt="" width="200" height="200">
-    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
-    <div class="form-floating">
-      <input type="author_name" class="form-control" id="floatingInput" placeholder="Ivan Ivanov" name="login">
-      <label for="floatingInput">Author Name</label>
+
+
+<div class="container">
+  <div class="row row-cols-2">
+    <div class="col">
+      <main class="form-signin w-100 m-auto">
+        <img class="mb-4" src="/static/images/small_graph.png" alt="" width="200" height="200">
+        {% if error_form == "registration" %}
+          <p class="text-danger"> {{ error }} </p>
+        {% endif %}
+        <form action="http://localhost:8000/users/registration/" method="GET"> 
+          <h1 class="h3 mb-3 fw-normal">Registration</h1>
+          <div class="form-floating">
+            <input type="author_name" class="form-control" id="floatingInput" placeholder="Ivan Ivanov" name="login">
+            <label for="floatingInput">Author Name</label>
+          </div>
+          <div class="form-floating">
+            <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
+            <label for="floatingInput">Email</label>
+          </div>
+          <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+            <label for="floatingPassword">Password</label>
+          </div>
+          <button class="w-100 btn btn-lg btn-primary" type="submit">Register</button>
+          <p class="mt-5 mb-3 text-muted">&copy Team MADE 2022  <i class="fa fa-github" aria-hidden="true"></i> <a href="https://github.com/MADE-TEAM-PROJECT-1">GitHub</a></p></p>
+        </form>
+      </main>
     </div>
-    <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
-      <label for="floatingInput">Email</label>
+    <div class="col">
+      <main class="form-signin w-100 m-auto">
+        <img class="mb-4" src="/static/images/graph.png" alt="" width="200" height="200">
+        {% if error_form == "login" %}
+          <p class="text-danger"> {{ error }} </p>
+        {% endif %}
+        <form action="http://localhost:8000/users/login_user/" method="GET"> 
+          <h1 class="h3 mb-3 fw-normal">Sign in</h1>
+          <div class="form-floating">
+            <input type="author_name" class="form-control" id="floatingInput" placeholder="Ivan Ivanov" name="login">
+            <label for="floatingInput">Author Name</label>
+          </div>
+          <div class="form-floating">
+            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
+            <label for="floatingPassword">Password</label>
+          </div>
+          <button class="w-100 btn btn-lg btn-success" type="submit">Register</button>
+          <p class="mt-5 mb-3 text-muted">&copy Team MADE 2022  <i class="fa fa-github" aria-hidden="true"></i> <a href="https://github.com/MADE-TEAM-PROJECT-1">GitHub</a></p></p>
+        </form>
+      </main>
     </div>
-    <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
-      <label for="floatingPassword">Password</label>
-    </div>
-    <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
-    <p class="mt-5 mb-3 text-muted">&copy Team MADE 2022  <i class="fa fa-github" aria-hidden="true"></i> <a href="https://github.com/MADE-TEAM-PROJECT-1">GitHub</a></p></p>
-  </form>
-</main>
+  </div>
+</div>
+    
+
   </body>
 </html>
