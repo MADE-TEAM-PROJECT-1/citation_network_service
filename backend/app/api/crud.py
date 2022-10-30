@@ -5,10 +5,12 @@ from uuid import UUID
 from fastapi import HTTPException, status
 from passlib import context
 
-class Hasher():
-    
+
+class Hasher:
     def __init__(self):
-        self.pwd_context = context.CryptContext(schemes=["sha256_crypt"], deprecated="auto")
+        self.pwd_context = context.CryptContext(
+            schemes=["sha256_crypt"], deprecated="auto"
+        )
 
     def verify_password(self, plain_password, hashed_password):
         return self.pwd_context.verify(plain_password, hashed_password)
@@ -18,16 +20,18 @@ class Hasher():
 
 
 def get_user_by_login(db: Session, login: str):
-    return  db.query(models.User).filter(models.User.login == login).first()
-    
-def get_user_by_id(db: Session, id: UUID):
-    return  db.query(models.User).filter(models.User.id == id).first()
+    return db.query(models.User).filter(models.User.login == login).first()
 
-def try_add_user(db: Session, login: str,password: str,email: str ):
+
+def get_user_by_id(db: Session, id: UUID):
+    return db.query(models.User).filter(models.User.id == id).first()
+
+
+def try_add_user(db: Session, login: str, password: str, email: str):
     password_hasher = Hasher()
     user_candidate = get_user_by_login(db, login)
     if user_candidate is not None:
-         raise HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="User with this login already exist",
         )
@@ -37,32 +41,35 @@ def try_add_user(db: Session, login: str,password: str,email: str ):
     db.commit()
     return new_user
 
+
 def try_login(db: Session, login: str, password: str):
     password_hasher = Hasher()
     user_candidate = get_user_by_login(db, login)
     if user_candidate is None:
-         raise HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="No user with this login",
         )
-    if not password_hasher.verify_password(password,user_candidate.password_hash):
-          raise HTTPException(
+    if not password_hasher.verify_password(password, user_candidate.password_hash):
+        raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="No user with this password:(",
+            detail="Ivalid password :(",
         )
     return user_candidate
+
 
 def change_password(db: Session, User_id: UUID, new_password: str):
     password_hasher = Hasher()
     user = get_user_by_id(db, User_id)
     if user is None:
-         raise HTTPException(
+        raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="No user with this ID",
         )
     user.password_hash = password_hasher.get_password_hash(new_password)
     db.commit()
     return user
+
 
 def get_or_create_orgs(db: Session, orgs: List[schemas.Org]):
     new_orgs = []
@@ -271,22 +278,42 @@ def create_citation(db: Session, citation: schemas.Citation):
 
 
 def get_search(db: Session, request: str, limit):
-    title_ans = db.query(models.Text).filter(models.Text.title.contains(request)).limit(limit).all()
+    title_ans = (
+        db.query(models.Text)
+        .filter(models.Text.title.contains(request))
+        .limit(limit)
+        .all()
+    )
     if title_ans != []:
         return title_ans
     else:
-        author_ans = db.query(models.Text).filter(models.Author.name.contains(request)).limit(limit).all() 
-        
+        author_ans = (
+            db.query(models.Text)
+            .filter(models.Author.name.contains(request))
+            .limit(limit)
+            .all()
+        )
+
     if author_ans != []:
         return author_ans
     else:
-        venue_ans = db.query(models.Text).filter(models.Text.venue_name.contains(request)).limit(limit).all() 
+        venue_ans = (
+            db.query(models.Text)
+            .filter(models.Text.venue_name.contains(request))
+            .limit(limit)
+            .all()
+        )
 
     if venue_ans != []:
         return venue_ans
     else:
-        keyword_ans = db.query(models.Text).filter(models.Keyword.name.contains(request)).limit(limit).all()
-        
+        keyword_ans = (
+            db.query(models.Text)
+            .filter(models.Keyword.name.contains(request))
+            .limit(limit)
+            .all()
+        )
+
     if keyword_ans != []:
         return keyword_ans
     else:

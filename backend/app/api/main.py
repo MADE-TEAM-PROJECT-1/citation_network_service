@@ -1,9 +1,9 @@
 from typing import List
-from urllib import request, response
+# from urllib import request, response
 
-from fastapi import FastAPI, status
+from fastapi import FastAPI, status, HTTPException
 from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi import FastAPI, Request
 
@@ -38,14 +38,19 @@ async def startup_event():
     models.Base.metadata.create_all(bind=engine)
 
 
-@app.post("/users/registration/", status_code=status.HTTP_200_OK)
-def register_user(request: Request, user: schemas.User):
+@app.get("/users/registration/", status_code=status.HTTP_200_OK, response_class=RedirectResponse)
+def register_user(request: Request, login: str, password: str, email: str):
     with SessionManager() as db:
-        return schemas.User.from_orm(crud.try_add_user(db, login, password, email))
+        try:
+            crud.try_add_user(db, login, password, email)
+        except HTTPException as ex:
+            get_params = "?error=" + '+'.join(ex.detail.split(' ')) + "&error_form=registration"
+            return RedirectResponse(f"/login/{get_params}")
+        return RedirectResponse('/texts/')
 
-@app.get("/login", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
-def login_page(request: Request):
-    return templates.TemplateResponse("signin.html", {"request": request})
+@app.get("/login/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+def login_page(request: Request, error: str = "", error_form: str = ""):
+    return templates.TemplateResponse("signin.html", {"request": request, "error" : error, "error_form" : error_form})
 
 @app.get("/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 def homepage(request: Request):
@@ -59,10 +64,15 @@ def get_user(login: str):
         return schemas.User.from_orm(crud.get_user_by_login(db, login))
 
 
-@app.post("/users/login_user/", status_code=status.HTTP_200_OK)
+@app.get("/users/login_user/", status_code=status.HTTP_200_OK, response_class=RedirectResponse)
 def login_user(login: str, password: str):
     with SessionManager() as db:
-        return schemas.User.from_orm(crud.try_login(db, login, password))
+        try:
+            crud.try_login(db, login, password)
+        except HTTPException as ex:
+            get_params = "?error=" + '+'.join(ex.detail.split(' ')) + "&error_form=login"
+            return RedirectResponse(f"/login/{get_params}")
+        return RedirectResponse('/texts/')
 
 
 @app.put(
