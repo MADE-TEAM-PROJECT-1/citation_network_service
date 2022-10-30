@@ -38,10 +38,10 @@ async def startup_event():
     models.Base.metadata.create_all(bind=engine)
 
 
-@app.post("/users/registration/", status_code=status.HTTP_200_OK)
-def register_user(request: Request, user: schemas.User):
+@app.get("/users/registration/", status_code=status.HTTP_200_OK)
+def register_user(request: Request, login: str, password: str, email: str):
     with SessionManager() as db:
-        return schemas.User.from_orm(crud.try_add_user(db, login, password, email))
+        crud.try_add_user(db, login, password, email)
 
 @app.get("/login", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 def login_page(request: Request):

@@ -75,6 +75,14 @@ class User(BaseModel):
     class Config:
         orm_mode = True
 
+
+class UserRegistration(BaseModel):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+    author_id: Optional[UUID] = Field(default_factory=uuid1)
+    login: str
+    email: str
+    password: str
+
         
 class Search(BaseModel):
     title: str

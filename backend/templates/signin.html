@@ -66,28 +66,21 @@
   <body class="text-center">
     
 <main class="form-signin w-100 m-auto">
-  <form>
+  <form action="http://localhost:8000/users/registration/" method="GET">
     <img class="mb-4" src="/static/images/graph.png" alt="" width="200" height="200">
     <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
 
     <div class="form-floating">
-      <input type="author_name" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <input type="author_name" class="form-control" id="floatingInput" placeholder="Ivan Ivanov" name="login">
       <label for="floatingInput">Author Name</label>
     </div>
     <div class="form-floating">
-      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+      <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com" name="email">
       <label for="floatingInput">Email</label>
     </div>
     <div class="form-floating">
-      <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
+      <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
       <label for="floatingPassword">Password</label>
-    </div>
-
-
-    <div class="checkbox mb-3">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
     </div>
     <button class="w-100 btn btn-lg btn-primary" type="submit">Sign in</button>
     <p class="mt-5 mb-3 text-muted">&copy Team MADE 2022  <i class="fa fa-github" aria-hidden="true"></i> <a href="https://github.com/MADE-TEAM-PROJECT-1">GitHub</a></p></p>
