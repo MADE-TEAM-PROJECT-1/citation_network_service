@@ -17,4 +17,9 @@ DATABASE_URL = config(
     default=f"postgresql://{POSTGRES_USER}:{POSTGRES_PASSWORD}@{POSTGRES_SERVER}:{POSTGRES_PORT}/{POSTGRES_DB}",
 )
 SCHEMA_NAME = config("SCHEMA_NAME", cast=str, default='citation_network')
+
+LOGS_DIR = config("LOGS_DIR", cast= str, default = "app/api/logs/log.txt")
+LOGS_MESSAGE_FORMAT = config("LOGS__MESSAGE_FORMAT", cast=str, default="%(asctime)s %(message)s")
+
+
 THREADS_LIMIT = config("THREADS_LIMIT", cast=int, default=5)

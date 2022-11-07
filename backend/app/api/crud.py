@@ -1,10 +1,13 @@
+import logging
 from typing import List
 from sqlalchemy.orm import Session
 from app.api import models, schemas
 from uuid import UUID
 from fastapi import HTTPException, status
 from passlib import context
+from app.core.config import SCHEMA_NAME, LOGS_DIR, LOGS_MESSAGE_FORMAT
 
+logging.basicConfig(filename=LOGS_DIR, level=logging.DEBUG, format=LOGS_MESSAGE_FORMAT, filemode="a+")
 
 class Hasher:
     def __init__(self):
@@ -20,14 +23,17 @@ class Hasher:
 
 
 def get_user_by_login(db: Session, login: str):
+    logging.info(f"{__name__} called")
     return db.query(models.User).filter(models.User.login == login).first()
 
 
 def get_user_by_id(db: Session, id: UUID):
+    logging.info(f"{__name__} called")
     return db.query(models.User).filter(models.User.id == id).first()
 
 
 def try_add_user(db: Session, login: str, password: str, email: str):
+    logging.info(f"{__name__} called")
     password_hasher = Hasher()
     user_candidate = get_user_by_login(db, login)
     if user_candidate is not None:
@@ -43,6 +49,7 @@ def try_add_user(db: Session, login: str, password: str, email: str):
 
 
 def try_login(db: Session, login: str, password: str):
+    logging.info(f"{__name__} called")
     password_hasher = Hasher()
     user_candidate = get_user_by_login(db, login)
     if user_candidate is None:
@@ -59,6 +66,7 @@ def try_login(db: Session, login: str, password: str):
 
 
 def change_password(db: Session, User_id: UUID, new_password: str):
+    logging.info(f"{__name__} called")
     password_hasher = Hasher()
     user = get_user_by_id(db, User_id)
     if user is None:
@@ -72,6 +80,7 @@ def change_password(db: Session, User_id: UUID, new_password: str):
 
 
 def get_or_create_orgs(db: Session, orgs: List[schemas.Org]):
+    logging.info(f"{__name__} called")
     new_orgs = []
 
     for org in orgs:
@@ -88,6 +97,7 @@ def get_or_create_orgs(db: Session, orgs: List[schemas.Org]):
 
 
 def get_or_create_authors(db: Session, authors: List[schemas.Author]):
+    logging.info(f"{__name__} called")
     new_authors = []
 
     for author in authors:
@@ -108,6 +118,7 @@ def get_or_create_authors(db: Session, authors: List[schemas.Author]):
 
 
 def get_or_create_keywords(db: Session, keywords: List[schemas.Keyword]):
+    logging.info(f"{__name__} called")
     new_keywords = []
 
     for keyword in keywords:
@@ -124,6 +135,7 @@ def get_or_create_keywords(db: Session, keywords: List[schemas.Keyword]):
 
 
 def get_or_create_fos(db: Session, fos_list: List[schemas.Fos]):
+    logging.info(f"{__name__} called")
     new_fos = []
 
     for fos in fos_list:
@@ -138,6 +150,7 @@ def get_or_create_fos(db: Session, fos_list: List[schemas.Fos]):
 
 
 def get_text(db: Session, text_id: UUID):
+    logging.info(f"{__name__} called")
     text = db.query(models.Text).filter(models.Text.id == text_id).first()
 
     if text is None:
@@ -149,11 +162,12 @@ def get_text(db: Session, text_id: UUID):
 
 
 def get_texts(db: Session, skip: int, limit: int):
+    logging.info(f"{__name__} called")
     return db.query(models.Text).offset(skip).limit(limit).all()
 
 
 def create_text(db: Session, text: schemas.TextBase):
-
+    logging.info(f"{__name__} called")
     new_text = models.Text(
         title=text.title,
         year=text.year,
@@ -172,6 +186,7 @@ def create_text(db: Session, text: schemas.TextBase):
 
 
 def delete_text(db: Session, text_id: UUID):
+    logging.info(f"{__name__} called")
     text = get_text(db, text_id)
 
     db.delete(text)
@@ -181,10 +196,12 @@ def delete_text(db: Session, text_id: UUID):
 
 
 def get_authors(db: Session, skip: int = 0, limit: int = 10):
+    logging.info(f"{__name__} called")
     return db.query(models.Author).offset(skip).limit(limit).all()
 
 
 def get_author(db: Session, author_id: UUID):
+    logging.info(f"{__name__} called")
     author = db.query(models.Author).filter(models.Author.id == author_id).first()
 
     if author is None:
@@ -196,6 +213,7 @@ def get_author(db: Session, author_id: UUID):
 
 
 def create_author(db: Session, author: schemas.AuthorBase):
+    logging.info(f"{__name__} called")
     new_author = models.Author(
         name=author.name, orgs=get_or_create_orgs(db, author.orgs)
     )
@@ -208,6 +226,7 @@ def create_author(db: Session, author: schemas.AuthorBase):
 
 
 def update_author(db: Session, author_id: UUID, author: schemas.AuthorBase):
+    logging.info(f"{__name__} called")
     author_to_update = get_author(db, author_id)
 
     author_to_update.name = author.name
@@ -219,6 +238,7 @@ def update_author(db: Session, author_id: UUID, author: schemas.AuthorBase):
 
 
 def delete_author(db: Session, author_id: UUID):
+    logging.info(f"{__name__} called")
     author = get_author(db, author_id)
 
     db.delete(author)
@@ -228,6 +248,7 @@ def delete_author(db: Session, author_id: UUID):
 
 
 def create_citation(db: Session, citation: schemas.Citation):
+    logging.info(f"{__name__} called")
     if citation.text_id_from == citation.text_id_to:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Text cannot cite yourself"
@@ -278,6 +299,7 @@ def create_citation(db: Session, citation: schemas.Citation):
 
 
 def get_search(db: Session, request: str, limit):
+    logging.info(f"{__name__} called")
     title_ans = (
         db.query(models.Text)
         .filter(models.Text.title.contains(request))
