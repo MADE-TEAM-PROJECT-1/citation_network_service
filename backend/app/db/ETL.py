@@ -6,6 +6,7 @@ import gdown
 from zipfile import ZipFile
 import os
 import shutil
+import dill
 
 
 url = 'https://drive.google.com/file/d/1yjeG6-kIpjoxFA75M5wUuHlsmJhpGnfw/view?usp=sharing'
@@ -145,5 +146,28 @@ for UUID_id, references in zip(df['UUID_id'], df['references']):
             tmp_l.append((uuid.uuid4(),UUID_id,id_dict[ref]))       
 df_citation = pd.DataFrame(tmp_l, columns=['citation_id', 'text_id_from', 'text_id_to'])
 df_citation.to_sql('citation', con=engine, schema='citation_network', if_exists='append', index=False, chunksize=200000)
+
+
+# filling in the table "tags"
+url = 'https://drive.google.com/file/d/1nYNUqcjxdDjlAsF3VWqRQJtKYiIGM1OY/view?usp=share_link'
+gdown.download(url=url, output="doc2vec_model_v2.pkl", quiet=False, fuzzy=True)
+with open('doc2vec_model_v2.pkl', 'rb') as in_strm:
+    estimator = dill.load(in_strm)
+os.remove('doc2vec_model_v2.pkl')
+
+tags_dict = {}
+tmp_l = []
+for i, row in text_df[['id', 'title', 'abstract']].iterrows():
+    text = row['title'] + ' ' + row['abstract']
+    tags = estimator.predict(text)
+    for tag in tags:
+        if tag not in tags_dict:
+            tags_dict[tag] = uuid.uuid4()
+        tmp_l.append((uuid.uuid4(),tags_dict[tag],row['id'])) 
+df_tags = pd.DataFrame(list(tags_dict.items()), columns = ['name', 'id'])
+df_tags = df_tags.reindex(columns=['id', 'name'])
+df_tags.to_sql('tags', con=engine, schema='citation_network', if_exists='append', index=False, chunksize=200000)
+df_tags_text = pd.DataFrame(tmp_l, columns=['tag_text_id', 'tag_id', 'text_id'])
+df_tags_text.to_sql('text_tags', con=engine, schema='citation_network', if_exists='append', index=False, chunksize=200000)
 
 shutil.rmtree('data')
