@@ -26,6 +26,14 @@ class Org(BaseModel):
         orm_mode = True
 
 
+class Tag(BaseModel):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
 class AuthorBase(BaseModel):
     name: str
     orgs: List[Org]
@@ -46,9 +54,8 @@ class TextBase(BaseModel):
     keywords: List[Keyword] 
     authors: List[Author]
     fos: List[Fos]
+    tags: List[Tag] 
 
-    # class Config:
-    #     orm_mode = True
 
 class Text(TextBase):
     id: Optional[UUID] = Field(default_factory=uuid1)
@@ -84,12 +91,21 @@ class UserRegistration(BaseModel):
     password: str
 
         
-class Search(BaseModel):
+class SearchRequest(BaseModel):
+    year: int
+    venue_name: str
+    author: str
+    tag: str
+
+
+class SearchResults(BaseModel):
     title: str
     year: int
     abstract: str
     venue_name: str
+    keywords: List[Keyword] 
     authors: List[Author]
+    tags: List[Tag]
     
     class Config:
         orm_mode = True

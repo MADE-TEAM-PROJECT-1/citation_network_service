@@ -4,6 +4,7 @@ from app.api import models, schemas
 from uuid import UUID
 from fastapi import HTTPException, status
 from passlib import context
+from collections import Counter
 
 
 class Hasher:
@@ -277,45 +278,25 @@ def create_citation(db: Session, citation: schemas.Citation):
     return new_citation
 
 
-def get_search(db: Session, request: str, limit):
-    title_ans = (
-        db.query(models.Text)
-        .filter(models.Text.title.contains(request))
-        .limit(limit)
-        .all()
-    )
-    if title_ans != []:
-        return title_ans
-    else:
-        author_ans = (
+def get_search(db: Session, request: schemas.SearchRequest):
+    ans_list = []
+    def search_filter(answers ,params):
+        ans = (
             db.query(models.Text)
-            .filter(models.Author.name.contains(request))
-            .limit(limit)
-            .all()
+            .filter(params).limit(20).all()
         )
+        for item in ans:
+            answers.append(item)
+        return answers
 
-    if author_ans != []:
-        return author_ans
-    else:
-        venue_ans = (
-            db.query(models.Text)
-            .filter(models.Text.venue_name.contains(request))
-            .limit(limit)
-            .all()
-        )
+    search_filter(ans_list, models.Text.tags.any(name=request.tag))
+    search_filter(ans_list, models.Text.authors.any(name=request.author))
+    search_filter(ans_list, models.Text.venue_name.contains(request.venue_name))
+    search_filter(ans_list, models.Text.year==request.year)
 
-    if venue_ans != []:
-        return venue_ans
-    else:
-        keyword_ans = (
-            db.query(models.Text)
-            .filter(models.Keyword.name.contains(request))
-            .limit(limit)
-            .all()
-        )
-
-    if keyword_ans != []:
-        return keyword_ans
+    if ans_list != []:
+        result = set(sorted(ans_list, key=Counter(ans_list).get, reverse=True))
+        return result
     else:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Nothing found"

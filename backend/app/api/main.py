@@ -170,12 +170,12 @@ def create_citation(citation: schemas.Citation):
         return schemas.Citation.from_orm(crud.create_citation(db, citation))
 
 
-@app.get(
-    "/search/", response_model=List[schemas.Search], status_code=status.HTTP_200_OK
+@app.post(
+    "/search/", response_model=List[schemas.SearchResults], status_code=status.HTTP_200_OK
 )
-def get_search(request, limit=30):
+def search_request(request: schemas.SearchRequest):
     with SessionManager() as db:
         return [
-            schemas.Search.from_orm(request)
-            for request in crud.get_search(db, request, limit)
+            schemas.SearchResults.from_orm(request)
+            for request in crud.get_search(db, request)
         ]

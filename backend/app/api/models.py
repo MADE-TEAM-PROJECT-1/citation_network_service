@@ -15,7 +15,6 @@ text_keywords = Table(
     Column("keyword_id", ForeignKey("keywords.id")),
 )
 
-
 text_author = Table(
     "text_author",
     Base.metadata,
@@ -43,6 +42,15 @@ org_author = Table(
     schema="citation_network",
 )
 
+text_tags = Table(
+    "text_tags",
+    Base.metadata,
+    Column("tag_text_id", UUID(as_uuid=True), primary_key=True, default=uuid1),
+    Column("tag_id", ForeignKey("tags.id")),
+    Column("text_id", ForeignKey("text.id")),
+    schema="citation_network",
+)
+
 
 class Text(Base):
     __tablename__ = "text"
@@ -58,6 +66,7 @@ class Text(Base):
     keywords = relationship("Keyword", secondary=text_keywords, back_populates="texts", )
     authors = relationship("Author", secondary=text_author, back_populates="texts")
     fos = relationship("Fos", secondary=text_fos, back_populates="texts")
+    tags = relationship("Tags", secondary=text_tags, back_populates="texts")
 
 
 class Citation(Base):
@@ -125,3 +134,12 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     author_id = Column(UUID(as_uuid=True), ForeignKey("author.id"))
     email = Column(String)
+
+class Tags(Base):
+    __tablename__ = "tags"
+    __table_args__ = {"schema": "citation_network"}
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+    name = Column(String, unique=True, index=True)
+
+    texts = relationship("Text", secondary=text_tags, back_populates="tags")
