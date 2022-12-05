@@ -44,17 +44,21 @@ def register_user(request: Request, login: str, password: str, email: str):
         try:
             crud.try_add_user(db, login, password, email)
         except HTTPException as ex:
-            get_params = "?error=" + '+'.join(ex.detail.split(' ')) + "&error_form=registration"
+            get_params = "?error=" + \
+                '+'.join(ex.detail.split(' ')) + "&error_form=registration"
             return RedirectResponse(f"/login/{get_params}")
         return RedirectResponse('/texts/')
 
+
 @app.get("/login/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 def login_page(request: Request, error: str = "", error_form: str = ""):
-    return templates.TemplateResponse("signin.html", {"request": request, "error" : error, "error_form" : error_form})
+    return templates.TemplateResponse("signin.html", {"request": request, "error": error, "error_form": error_form})
+
 
 @app.get("/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 def homepage(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
+
 
 @app.get(
     "/users/get_user/", response_model=schemas.User, status_code=status.HTTP_200_OK
@@ -70,7 +74,8 @@ def login_user(login: str, password: str):
         try:
             crud.try_login(db, login, password)
         except HTTPException as ex:
-            get_params = "?error=" + '+'.join(ex.detail.split(' ')) + "&error_form=login"
+            get_params = "?error=" + \
+                '+'.join(ex.detail.split(' ')) + "&error_form=login"
             return RedirectResponse(f"/login/{get_params}")
         return RedirectResponse('/texts/')
 
@@ -129,8 +134,8 @@ def get_text(request: Request, text_id: UUID):
         return templates.TemplateResponse(
             "text.html",
             {
-                "request" : request,
-                "text" : text
+                "request": request,
+                "text": text
             },
         )
 
@@ -146,7 +151,7 @@ def get_texts(request: Request, skip: int = 0, limit: int = 10):
         texts = crud.get_texts(db, skip, limit)
 
         return templates.TemplateResponse(
-            "list-articles.html", {"request" : request, "texts": texts}
+            "list-articles.html", {"request": request, "texts": texts}
         )
 
 

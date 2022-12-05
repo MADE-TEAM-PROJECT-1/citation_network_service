@@ -1,5 +1,15 @@
 version: '3.8'
 services:
+  classification_inference:
+    build:
+      context: ./classification_inference
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8088
+    ports:
+      - 8088:8088
+    depends_on:
+      - server
+    restart: always
   server:
     build:
       context: ./backend
