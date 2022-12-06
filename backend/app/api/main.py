@@ -1,18 +1,14 @@
 from typing import List
-# from urllib import request, response
-
-from fastapi import FastAPI, status, HTTPException
-from fastapi.templating import Jinja2Templates
-from fastapi.responses import HTMLResponse, RedirectResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi import FastAPI, Request
-
-from sqlalchemy.schema import CreateSchema
-
 from uuid import UUID
+
 from app.api import crud, models, schemas
 from app.api.database import SessionLocal, engine
 from app.core.config import SCHEMA_NAME
+from fastapi import FastAPI, HTTPException, Request, status
+from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
+from sqlalchemy.schema import CreateSchema
 
 
 class SessionManager:
@@ -38,21 +34,28 @@ async def startup_event():
     models.Base.metadata.create_all(bind=engine)
 
 
-@app.get("/users/registration/", status_code=status.HTTP_200_OK, response_class=RedirectResponse)
+@app.get(
+    "/users/registration/",
+    status_code=status.HTTP_200_OK,
+    response_class=RedirectResponse,
+)
 def register_user(request: Request, login: str, password: str, email: str):
     with SessionManager() as db:
         try:
             crud.try_add_user(db, login, password, email)
         except HTTPException as ex:
-            get_params = "?error=" + \
-                '+'.join(ex.detail.split(' ')) + "&error_form=registration"
+            get_params = (
+                "?error=" + "+".join(ex.detail.split(" ")) + "&error_form=registration"
+            )
             return RedirectResponse(f"/login/{get_params}")
-        return RedirectResponse('/texts/')
+        return RedirectResponse("/texts/")
 
 
 @app.get("/login/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
 def login_page(request: Request, error: str = "", error_form: str = ""):
-    return templates.TemplateResponse("signin.html", {"request": request, "error": error, "error_form": error_form})
+    return templates.TemplateResponse(
+        "signin.html", {"request": request, "error": error, "error_form": error_form}
+    )
 
 
 @app.get("/", response_class=HTMLResponse, status_code=status.HTTP_200_OK)
@@ -68,16 +71,21 @@ def get_user(login: str):
         return schemas.User.from_orm(crud.get_user_by_login(db, login))
 
 
-@app.get("/users/login_user/", status_code=status.HTTP_200_OK, response_class=RedirectResponse)
+@app.get(
+    "/users/login_user/",
+    status_code=status.HTTP_200_OK,
+    response_class=RedirectResponse,
+)
 def login_user(login: str, password: str):
     with SessionManager() as db:
         try:
             crud.try_login(db, login, password)
         except HTTPException as ex:
-            get_params = "?error=" + \
-                '+'.join(ex.detail.split(' ')) + "&error_form=login"
+            get_params = (
+                "?error=" + "+".join(ex.detail.split(" ")) + "&error_form=login"
+            )
             return RedirectResponse(f"/login/{get_params}")
-        return RedirectResponse('/texts/')
+        return RedirectResponse("/texts/")
 
 
 @app.put(
@@ -127,16 +135,18 @@ def create_author(author: schemas.AuthorBase):
         return schemas.Author.from_orm(crud.create_author(db, author))
 
 
-@app.get("/text/", response_model=schemas.Text, response_class=HTMLResponse, status_code=status.HTTP_200_OK)
+@app.get(
+    "/text/",
+    response_model=schemas.Text,
+    response_class=HTMLResponse,
+    status_code=status.HTTP_200_OK,
+)
 def get_text(request: Request, text_id: UUID):
     with SessionManager() as db:
         text = crud.get_text(db, text_id)
         return templates.TemplateResponse(
             "text.html",
-            {
-                "request": request,
-                "text": text
-            },
+            {"request": request, "text": text},
         )
 
 
@@ -155,10 +165,10 @@ def get_texts(request: Request, skip: int = 0, limit: int = 10):
         )
 
 
-@app.post("/text/", response_model=schemas.Text, status_code=status.HTTP_201_CREATED)
-def create_text(text: schemas.TextBase):
-    with SessionManager() as db:
-        return schemas.Text.from_orm(crud.create_text(db, text))
+# @app.post("/text/", response_model=schemas.Text, status_code=status.HTTP_201_CREATED)
+# def create_text(text: schemas.TextBase):
+#     with SessionManager() as db:
+#         return schemas.Text.from_orm(crud.create_text(db, text))
 
 
 @app.delete("/text/", response_model=schemas.Text, status_code=status.HTTP_200_OK)
@@ -176,7 +186,9 @@ def create_citation(citation: schemas.Citation):
 
 
 @app.post(
-    "/search/", response_model=List[schemas.SearchResults], status_code=status.HTTP_200_OK
+    "/search/",
+    response_model=List[schemas.SearchResults],
+    status_code=status.HTTP_200_OK,
 )
 def search_request(request: schemas.SearchRequest):
     with SessionManager() as db:
@@ -184,3 +196,17 @@ def search_request(request: schemas.SearchRequest):
             schemas.SearchResults.from_orm(request)
             for request in crud.get_search(db, request)
         ]
+
+
+@app.get("/text/add", status_code=status.HTTP_200_OK)
+def add_text_page(request: Request):
+    return templates.TemplateResponse()
+
+
+@app.post("/text/add", status_code=status.HTTP_200_OK)
+def add_text(text: schemas.TextInput):
+    with SessionManager() as db:
+        text_id = str(crud.add_text(db, text))
+        return RedirectResponse(
+            f"/text/?text_id={text_id}", status_code=status.HTTP_303_SEE_OTHER
+        )

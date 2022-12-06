@@ -1,10 +1,12 @@
+from collections import Counter
 from typing import List
-from sqlalchemy.orm import Session
+from uuid import UUID, uuid1
+
+import requests
 from app.api import models, schemas
-from uuid import UUID
 from fastapi import HTTPException, status
 from passlib import context
-from collections import Counter
+from sqlalchemy.orm import Session
 
 
 class Hasher:
@@ -138,6 +140,20 @@ def get_or_create_fos(db: Session, fos_list: List[schemas.Fos]):
     return new_fos
 
 
+def get_or_create_tags(db: Session, tags_list: List[str]):
+    new_tags = []
+
+    for tag in tags_list:
+        existing_tag = db.query(models.Tags).filter(models.Tags.name == tag).first()
+
+        if existing_tag is None:
+            new_tags.append(models.Tags(id=uuid1(), name=tag))
+        else:
+            new_tags.append(existing_tag)
+
+    return new_tags
+
+
 def get_text(db: Session, text_id: UUID):
     text = db.query(models.Text).filter(models.Text.id == text_id).first()
 
@@ -153,7 +169,7 @@ def get_texts(db: Session, skip: int, limit: int):
     return db.query(models.Text).offset(skip).limit(limit).all()
 
 
-def create_text(db: Session, text: schemas.TextBase):
+def create_text(db: Session, text: schemas.TextInput):
 
     new_text = models.Text(
         title=text.title,
@@ -280,11 +296,9 @@ def create_citation(db: Session, citation: schemas.Citation):
 
 def get_search(db: Session, request: schemas.SearchRequest):
     ans_list = []
-    def search_filter(answers ,params):
-        ans = (
-            db.query(models.Text)
-            .filter(params).limit(20).all()
-        )
+
+    def search_filter(answers, params):
+        ans = db.query(models.Text).filter(params).limit(20).all()
         for item in ans:
             answers.append(item)
         return answers
@@ -292,7 +306,7 @@ def get_search(db: Session, request: schemas.SearchRequest):
     search_filter(ans_list, models.Text.tags.any(name=request.tag))
     search_filter(ans_list, models.Text.authors.any(name=request.author))
     search_filter(ans_list, models.Text.venue_name.contains(request.venue_name))
-    search_filter(ans_list, models.Text.year==request.year)
+    search_filter(ans_list, models.Text.year == request.year)
 
     if ans_list != []:
         result = set(sorted(ans_list, key=Counter(ans_list).get, reverse=True))
@@ -301,3 +315,27 @@ def get_search(db: Session, request: schemas.SearchRequest):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Nothing found"
         )
+
+
+def add_text(db: Session, text: schemas.TextInput):
+    tags = requests.post(
+        url="http://classification_inference:8088/predict_tags/",
+        json={"title": text.title, "abstract": text.abstract},
+    ).json()["predictions"]
+
+    new_text = models.Text(
+        title=text.title,
+        year=text.year,
+        abstract=text.abstract,
+        venue_name=text.venue_name,
+        keywords=get_or_create_keywords(db, text.keywords),
+        authors=get_or_create_authors(db, text.authors),
+        fos=get_or_create_fos(db, text.fos),
+        tags=get_or_create_tags(db, tags),
+    )
+
+    db.add(new_text)
+    db.commit()
+    db.refresh(new_text)
+
+    return new_text.id

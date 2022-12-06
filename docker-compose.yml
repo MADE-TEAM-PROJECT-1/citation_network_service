@@ -1,4 +1,9 @@
 version: '3.8'
+
+networks:
+  isolation-network:
+    driver: bridge
+
 services:
   classification_inference:
     build:
@@ -10,6 +15,8 @@ services:
     depends_on:
       - server
     restart: always
+    networks:
+      - isolation-network
   server:
     build:
       context: ./backend
@@ -25,6 +32,8 @@ services:
       db:
         condition: service_healthy
     restart: always
+    networks:
+      - isolation-network
   db:
     image: postgres:13-alpine
     volumes:
@@ -39,5 +48,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - isolation-network
 volumes:
   postgres_data:
