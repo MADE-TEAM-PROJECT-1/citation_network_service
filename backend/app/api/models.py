@@ -1,7 +1,7 @@
 from email.policy import default
 from uuid import uuid1
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy import Boolean, Integer, Column, ForeignKey, String, Table
+from sqlalchemy import Boolean, Integer, Column, ForeignKey, String, Table, Date
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.database import Base
@@ -125,3 +125,70 @@ class User(Base):
     password_hash = Column(String, nullable=False)
     author_id = Column(UUID(as_uuid=True), ForeignKey("author.id"))
     email = Column(String)
+
+StoredSearch = Table(
+    "stored_search",
+    Base.metadata,
+    Column("id", UUID(as_uuid=True), primary_key=True, default=uuid1),
+    Column("user_id", ForeignKey("user.id")),
+    Column("request_date", Date),
+    Column("request_str", String),
+    schema="citation_network",
+)
+
+#class StoredSearch(Base):
+ #   __trablename__ = "storedsearch"
+ #   __table_args__ = {"schema": "citation_network"}
+
+#    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+
+ #   user_id =  Column(UUID(as_uuid=True), ForeignKey("user.id"))
+ #   request_date = Column(Date)
+ #   request_str = Column(String, index = True)
+
+ArticlesOpened = Table(
+    "articles_opened",
+    Base.metadata,
+    Column("id", UUID(as_uuid=True), primary_key=True, default=uuid1),
+    Column("user_id", ForeignKey("user.id")),
+    Column("text_id", ForeignKey("text.id")),
+    Column("request_date", Date),
+    schema="citation_network",
+)
+
+#class ArticlesOpened(Base):
+#    __trablename__ = "articlesopened"
+#    __table_args__ = {"schema": "citation_network"}
+
+ #   id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+
+ #   user_id =  Column(UUID(as_uuid=True), ForeignKey("user.id"))
+#    text_id =  Column(UUID(as_uuid=True), ForeignKey("text.id"))   
+  #  request_date = Column(Date)
+
+ArticlesRated = Table(
+    "articles_rated",
+    Base.metadata,
+    Column("id", UUID(as_uuid=True), primary_key=True, default=uuid1),
+    Column("user_id", ForeignKey("user.id")),
+    Column("text_id", ForeignKey("text.id")),
+    Column("request_date", Date),
+    Column("mark",Integer),
+    schema="citation_network",
+)
+
+#class ArticlesRated(Base):
+ #   __trablename__ = "articlerated"
+ #   __table_args__ = {"schema": "citation_network"}
+
+  #  id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+
+   # user_id =  Column(UUID(as_uuid=True), ForeignKey("user.id"))
+   # text_id =  Column(UUID(as_uuid=True), ForeignKey("text.id"))
+   # request_date = Column(Date)
+   # mark = Column(Integer, nullable=True)
+
+    
+
+
+

@@ -1,7 +1,7 @@
-from typing import Optional, List
+from typing import Optional, List, Literal
 from pydantic import BaseModel, Field
+from datetime import date, datetime, time
 from uuid import UUID, uuid1
-
 
 class Keyword(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
@@ -93,3 +93,36 @@ class Search(BaseModel):
     
     class Config:
         orm_mode = True
+
+
+class StoredSearch(BaseModel):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+    user_id: Optional[UUID] = Field(default_factory=uuid1)
+    request_date: date
+    request_str : str
+
+    class Config: 
+        orm_mode = True
+
+class ArticlesOpened(BaseModel):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+    user_id: Optional[UUID] = Field(default_factory=uuid1)
+    text_id: Optional[UUID] = Field(default_factory=uuid1)
+    request_date: date
+
+    class Config: 
+        orm_mode = True
+
+class ArticlesRated(BaseModel):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+    user_id: Optional[UUID] = Field(default_factory=uuid1)
+    text_id: Optional[UUID] = Field(default_factory=uuid1)
+    request_date: date
+    mark : Literal[0,1,2,3,4,5]
+
+    class Config:
+        orm_nodel = True
+    
+
+
+

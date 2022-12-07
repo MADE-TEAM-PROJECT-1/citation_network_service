@@ -1,6 +1,7 @@
 import logging
 import sys
 from typing import List
+from datetime import datetime
 # from urllib import request, response
 
 from fastapi import FastAPI, status, HTTPException
@@ -36,12 +37,18 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-
 @app.on_event("startup")
 async def startup_event():
     if not engine.dialect.has_schema(engine, SCHEMA_NAME):
         engine.execute(CreateSchema(SCHEMA_NAME))
     models.Base.metadata.create_all(bind=engine)
+
+@app.post("logging/stored_search/",status_code=status.HTTP_200_OK, response_class=RedirectResponse)
+def add_stored_search(request: Request, stored_search: schemas.StoredSearch):
+    logging.info(f"{__name__} called")
+    with SessionManager() as db:
+        return schemas.StoredSearch.from_orm(crud.create_stored_search(db, stored_search))
+
 
 
 @app.get("/users/registration/", status_code=status.HTTP_200_OK, response_class=RedirectResponse)

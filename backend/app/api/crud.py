@@ -21,6 +21,19 @@ class Hasher:
     def get_password_hash(self, password):
         return self.pwd_context.hash(password)
 
+#def create_stored_search(db: Session, stored_search: schemas.StoredSearch):
+#    new_stored_search = models.StoredSearch(
+#        id=stored_search.id,
+#        user_id = stored_search.user_id,
+#        request_date = stored_search.request_date,
+#        request_str = stored_search.request_str
+ #   )
+#    db.add(new_stored_search)
+ #   db.commit()
+ #   db.refresh(new_stored_search)
+
+  #  return new_stored_search
+
 
 def get_user_by_login(db: Session, login: str):
     logging.info(f"{__name__} called")
