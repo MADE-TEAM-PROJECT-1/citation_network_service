@@ -22,7 +22,7 @@ os.remove("data.zip")
 engine = create_engine("postgresql://postgres:postgres@0.0.0.0:5432/postgres")
 
 df = pd.DataFrame()
-for i in range(1, 2):
+for i in range(1, 4):
     df = pd.concat(
         [df, pd.read_json("data/part_" + str(i) + "_clean.json")], ignore_index=True
     )
