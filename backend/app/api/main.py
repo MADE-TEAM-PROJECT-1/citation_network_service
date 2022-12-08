@@ -45,8 +45,6 @@ def add_stored_search(request: Request, stored_search: schemas.StoredSearch):
     with SessionManager() as db:
         return schemas.StoredSearch.from_orm(crud.create_stored_search(db, stored_search))
 
-
-
 @app.get(
     "/users/registration/",
     status_code=status.HTTP_200_OK,
@@ -56,11 +54,12 @@ def register_user(request: Request, login: str, password: str, email: str):
     logging.info(f"{__name__} called")
     with SessionManager() as db:
         try:
-            crud.try_add_user(db, login, password, email)
+            new_user = crud.try_add_user(db, login, password, email)
         except HTTPException as ex:
             get_params = "?error=" + '+'.join(ex.detail.split(' ')) + "&error_form=registration"
             logging.info("registered user tried to register:" + get_params)
             return RedirectResponse(f"/login/{get_params}")
+        logging.info(f"new user with id {new_user.id} is created")
         return RedirectResponse("/texts/")
 
 
@@ -90,24 +89,25 @@ def get_user(login: str):
     status_code=status.HTTP_200_OK,
     response_class=RedirectResponse,
 )
-def login_user(login: str, password: str):
+def login_user(request: Request, login: str, password: str):
     logging.info(f"{__name__} called")
     with SessionManager() as db:
         try:
-            crud.try_login(db, login, password)
+            user = crud.try_login(db, login, password)
         except HTTPException as ex:
             get_params = "?error=" + '+'.join(ex.detail.split(' ')) + "&error_form=login"
             logging.info("failed to log in user params:" + get_params)
             return RedirectResponse(f"/login/{get_params}")
+        request.state.__setattr__('user', user.id)
+        logging.info(f"request user id is{request.state.user}")
         return RedirectResponse("/texts/")
-
 
 @app.put(
     "/users/change_password",
     response_model=schemas.User,
     status_code=status.HTTP_200_OK,
 )
-def change_password(User_id: UUID, new_password: str):
+def change_password(request: Request, User_id: UUID, new_password: str):
     logging.info(f"{__name__} called")
     with SessionManager() as db:
         return schemas.User.from_orm(crud.change_password(db, User_id, new_password))
@@ -187,7 +187,15 @@ def get_texts(request: Request, skip: int = 0, limit: int = 10):
             "list-articles.html", {"request": request, "texts": texts}
         )
 
+@app.get("/loggs/", response_model=List[schemas.StoredSearch], status_code=status.HTTP_200_OK)
+def get_stored_search(request: Request, user_id : str,  limit: int = 10):
+    logging.info(f"{__name__} called")
+    with SessionManager() as db:
+        searches = crud.get_search_loggs(db, user_id, limit)
 
+        return templates.TemplateResponse(
+            "list-articles.html", {"request": request, "searches": searches}
+        )
 # @app.post("/text/", response_model=schemas.Text, status_code=status.HTTP_201_CREATED)
 # def create_text(text: schemas.TextBase):
 #     with SessionManager() as db:
@@ -214,7 +222,16 @@ def create_citation(citation: schemas.Citation):
     "/search/", response_model=List[schemas.SearchResults], status_code=status.HTTP_200_OK, 
 )
 def search_request(request: Request, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
+    logging.info(f"{__name__} called")
     with SessionManager() as db:
+        logging.info(f"request.state is = {request.state}")
+        try:
+            user_id =  request.state.__getattr__('user')
+            if user_id == None:
+                user_id = ""
+            crud.add_search(user_id, tag, author, venue_name, year)
+        except:
+            logging.info(f"no user in logged in this session")
         texts = [
             schemas.SearchResults.from_orm(request)
             for request in crud.get_search(db, tag, author, venue_name, year)
@@ -229,11 +246,13 @@ def search_request(request: Request, tag: str = "", author: str = "", venue_name
 
 @app.get("/text/add", status_code=status.HTTP_200_OK)
 def add_text_page(request: Request):
+    logging.info(f"{__name__} called")
     return templates.TemplateResponse()
 
 
 @app.post("/text/add", status_code=status.HTTP_200_OK)
 def add_text(text: schemas.TextInput):
+    logging.info(f"{__name__} called")
     with SessionManager() as db:
         text_id = str(crud.add_text(db, text))
         return RedirectResponse(

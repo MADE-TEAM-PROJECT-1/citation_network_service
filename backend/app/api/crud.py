@@ -2,7 +2,7 @@ from collections import Counter
 import logging
 from typing import List
 from uuid import UUID, uuid1
-
+from datetime import date
 import requests
 from app.api import models, schemas
 from fastapi import HTTPException, status
@@ -11,6 +11,9 @@ from sqlalchemy.orm import Session
 from app.core.config import SCHEMA_NAME, LOGS_DIR, LOGS_MESSAGE_FORMAT
 
 logging.basicConfig(filename=LOGS_DIR, level=logging.DEBUG, format=LOGS_MESSAGE_FORMAT, filemode="a+")
+
+def get_cur_date() -> date:
+    return date.today()
 
 class Hasher:
     def __init__(self):
@@ -24,18 +27,34 @@ class Hasher:
     def get_password_hash(self, password):
         return self.pwd_context.hash(password)
 
-#def create_stored_search(db: Session, stored_search: schemas.StoredSearch):
-#    new_stored_search = models.StoredSearch(
-#        id=stored_search.id,
-#        user_id = stored_search.user_id,
-#        request_date = stored_search.request_date,
-#        request_str = stored_search.request_str
- #   )
-#    db.add(new_stored_search)
- #   db.commit()
- #   db.refresh(new_stored_search)
 
-  #  return new_stored_search
+def get_search_loggs(db: Session, user_id: UUID, limit: int):
+    logging.info(f"{__name__} called")
+
+    answers = []
+    ans = db.query(models.StoredSearch.id).filter(models.StoredSearch.user_id == user_id)
+   # ans = db.execute(f"SELECT * FROM StoredSearch WHERE user_id == '{user_id}' LIMIT 20")
+    for item in ans:
+                answers.append(item)
+    result = set(sorted(answers, key=Counter(answers).get, reverse=True))
+    return result
+
+
+
+def create_stored_search(db: Session, user_id : UUID, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
+    new_stored_search = models.StoredSearch(
+        user_id=user_id,
+        request_date = get_cur_date(),
+        tag = tag ,
+        author = author,
+        venue_name = venue_name,
+        year = int(year)
+   )
+    db.add(new_stored_search)
+    db.commit()
+    db.refresh(new_stored_search)
+
+    return new_stored_search
 
 
 def get_user_by_login(db: Session, login: str):
