@@ -1,10 +1,13 @@
+from collections import Counter
 import logging
 from typing import List
-from sqlalchemy.orm import Session
+from uuid import UUID, uuid1
+
+import requests
 from app.api import models, schemas
-from uuid import UUID
 from fastapi import HTTPException, status
 from passlib import context
+from sqlalchemy.orm import Session
 from app.core.config import SCHEMA_NAME, LOGS_DIR, LOGS_MESSAGE_FORMAT
 
 logging.basicConfig(filename=LOGS_DIR, level=logging.DEBUG, format=LOGS_MESSAGE_FORMAT, filemode="a+")
@@ -162,6 +165,20 @@ def get_or_create_fos(db: Session, fos_list: List[schemas.Fos]):
     return new_fos
 
 
+def get_or_create_tags(db: Session, tags_list: List[str]):
+    new_tags = []
+
+    for tag in tags_list:
+        existing_tag = db.query(models.Tags).filter(models.Tags.name == tag).first()
+
+        if existing_tag is None:
+            new_tags.append(models.Tags(id=uuid1(), name=tag))
+        else:
+            new_tags.append(existing_tag)
+
+    return new_tags
+
+
 def get_text(db: Session, text_id: UUID):
     logging.info(f"{__name__} called")
     text = db.query(models.Text).filter(models.Text.id == text_id).first()
@@ -179,8 +196,8 @@ def get_texts(db: Session, skip: int, limit: int):
     return db.query(models.Text).offset(skip).limit(limit).all()
 
 
-def create_text(db: Session, text: schemas.TextBase):
-    logging.info(f"{__name__} called")
+def create_text(db: Session, text: schemas.TextInput):
+
     new_text = models.Text(
         title=text.title,
         year=text.year,
@@ -311,47 +328,53 @@ def create_citation(db: Session, citation: schemas.Citation):
     return new_citation
 
 
-def get_search(db: Session, request: str, limit):
-    logging.info(f"{__name__} called")
-    title_ans = (
-        db.query(models.Text)
-        .filter(models.Text.title.contains(request))
-        .limit(limit)
-        .all()
+def get_search(db: Session, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
+    ans_list = []
+
+    def search_filter(answers, params):
+        ans = db.query(models.Text).filter(params).limit(20).all()
+        for item in ans:
+            answers.append(item)
+        return answers
+
+    if venue_name == "":
+        venue_name = "<!?*>"
+    if year == "":
+        year = 0
+    else:
+        try:
+            year = int(year)
+        except:
+            return set()
+
+    search_filter(ans_list, models.Text.tags.any(name=tag))
+    search_filter(ans_list, models.Text.authors.any(name=author))
+    search_filter(ans_list, models.Text.venue_name.contains(venue_name))
+    search_filter(ans_list, models.Text.year==year)
+
+    result = set(sorted(ans_list, key=Counter(ans_list).get, reverse=True))
+    return result
+
+
+def add_text(db: Session, text: schemas.TextInput):
+    tags = requests.post(
+        url="http://classification_inference:8088/predict_tags/",
+        json={"title": text.title, "abstract": text.abstract},
+    ).json()["predictions"]
+
+    new_text = models.Text(
+        title=text.title,
+        year=text.year,
+        abstract=text.abstract,
+        venue_name=text.venue_name,
+        keywords=get_or_create_keywords(db, text.keywords),
+        authors=get_or_create_authors(db, text.authors),
+        fos=get_or_create_fos(db, text.fos),
+        tags=get_or_create_tags(db, tags),
     )
-    if title_ans != []:
-        return title_ans
-    else:
-        author_ans = (
-            db.query(models.Text)
-            .filter(models.Author.name.contains(request))
-            .limit(limit)
-            .all()
-        )
 
-    if author_ans != []:
-        return author_ans
-    else:
-        venue_ans = (
-            db.query(models.Text)
-            .filter(models.Text.venue_name.contains(request))
-            .limit(limit)
-            .all()
-        )
+    db.add(new_text)
+    db.commit()
+    db.refresh(new_text)
 
-    if venue_ans != []:
-        return venue_ans
-    else:
-        keyword_ans = (
-            db.query(models.Text)
-            .filter(models.Keyword.name.contains(request))
-            .limit(limit)
-            .all()
-        )
-
-    if keyword_ans != []:
-        return keyword_ans
-    else:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Nothing found"
-        )
+    return new_text.id

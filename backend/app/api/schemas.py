@@ -10,6 +10,7 @@ class Keyword(BaseModel):
     class Config:
         orm_mode = True
 
+
 class Fos(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
     name: str
@@ -19,6 +20,14 @@ class Fos(BaseModel):
 
 
 class Org(BaseModel):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+    name: str
+
+    class Config:
+        orm_mode = True
+
+
+class Tag(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
     name: str
 
@@ -38,17 +47,31 @@ class Author(AuthorBase):
         orm_mode = True
 
 
+class TextInput(BaseModel):
+    id: Optional[UUID] = Field(default_factory=uuid1)
+    n_citation: int
+    title: str
+    year: int
+    abstract: str
+    venue_name: str
+    keywords: List[Keyword]
+    authors: List[Author]
+    fos: List[Fos]
+
+    class Config:
+        orm_mode = True
+
+
 class TextBase(BaseModel):
     title: str
     year: int
     abstract: str
     venue_name: str
-    keywords: List[Keyword] 
+    keywords: List[Keyword]
     authors: List[Author]
     fos: List[Fos]
+    tags: List[Tag]
 
-    # class Config:
-    #     orm_mode = True
 
 class Text(TextBase):
     id: Optional[UUID] = Field(default_factory=uuid1)
@@ -65,12 +88,13 @@ class Citation(BaseModel):
     class Config:
         orm_mode = True
 
+
 class User(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
     login: str
     password_hash: str
     email: str
-    author_id = UUID 
+    author_id = UUID
 
     class Config:
         orm_mode = True
@@ -83,14 +107,17 @@ class UserRegistration(BaseModel):
     email: str
     password: str
 
-        
-class Search(BaseModel):
+
+class SearchResults(BaseModel):
     title: str
     year: int
     abstract: str
     venue_name: str
+    keywords: List[Keyword]
     authors: List[Author]
-    
+    tags: List[Tag]
+    fos: List[Fos]
+
     class Config:
         orm_mode = True
 
