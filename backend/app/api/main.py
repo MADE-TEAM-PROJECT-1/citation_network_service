@@ -186,12 +186,12 @@ def create_citation(citation: schemas.Citation):
 
 
 @app.get(
-    "/search/", response_model=List[schemas.TextSearchResults], status_code=status.HTTP_200_OK, 
+    "/search/", response_model=List[schemas.SearchResults], status_code=status.HTTP_200_OK, 
 )
 def search_request(request: Request, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
     with SessionManager() as db:
         texts = [
-            schemas.TextSearchResults.from_orm(request)
+            schemas.SearchResults.from_orm(request)
             for request in crud.get_search(db, tag, author, venue_name, year)
         ]
         if texts !=[]:
