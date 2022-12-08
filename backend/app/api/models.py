@@ -132,7 +132,7 @@ StoredSearch = Table(
     Column("id", UUID(as_uuid=True), primary_key=True, default=uuid1),
     Column("user_id", ForeignKey("user.id")),
     Column("request_date", Date),
-    Column("request_str", String),
+    Column("search_request", String),
     schema="citation_network",
 )
 
