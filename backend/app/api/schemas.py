@@ -108,13 +108,6 @@ class UserRegistration(BaseModel):
     password: str
 
 
-class SearchRequest(BaseModel):
-    year: int
-    venue_name: str
-    author: str
-    tag: str
-
-
 class SearchResults(BaseModel):
     title: str
     year: int
@@ -123,6 +116,7 @@ class SearchResults(BaseModel):
     keywords: List[Keyword]
     authors: List[Author]
     tags: List[Tag]
+    fos: List[Fos]
 
     class Config:
         orm_mode = True
