@@ -294,7 +294,7 @@ def create_citation(db: Session, citation: schemas.Citation):
     return new_citation
 
 
-def get_search(db: Session, request: schemas.SearchRequest):
+def get_search(db: Session, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
     ans_list = []
 
     def search_filter(answers, params):
@@ -303,18 +303,23 @@ def get_search(db: Session, request: schemas.SearchRequest):
             answers.append(item)
         return answers
 
-    search_filter(ans_list, models.Text.tags.any(name=request.tag))
-    search_filter(ans_list, models.Text.authors.any(name=request.author))
-    search_filter(ans_list, models.Text.venue_name.contains(request.venue_name))
-    search_filter(ans_list, models.Text.year == request.year)
-
-    if ans_list != []:
-        result = set(sorted(ans_list, key=Counter(ans_list).get, reverse=True))
-        return result
+    if venue_name == "":
+        venue_name = "<!?*>"
+    if year == "":
+        year = 0
     else:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Nothing found"
-        )
+        try:
+            year = int(year)
+        except:
+            return set()
+
+    search_filter(ans_list, models.Text.tags.any(name=tag))
+    search_filter(ans_list, models.Text.authors.any(name=author))
+    search_filter(ans_list, models.Text.venue_name.contains(venue_name))
+    search_filter(ans_list, models.Text.year==year)
+
+    result = set(sorted(ans_list, key=Counter(ans_list).get, reverse=True))
+    return result
 
 
 def add_text(db: Session, text: schemas.TextInput):
