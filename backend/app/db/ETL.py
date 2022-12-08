@@ -28,7 +28,7 @@ for i in range(1, 2):
     )
 
 df = df.rename(columns={"venue": "venue_name"})
-df["venue_name"] = df["venue_name"].apply(lambda x: list(x.values()))
+df["venue_name"] = df["venue_name"].apply(lambda x: list(x.values())[0])
 df = df.sample(frac=0.1, random_state=42)
 
 print(datetime.now(), 'filling in the table "text"')
