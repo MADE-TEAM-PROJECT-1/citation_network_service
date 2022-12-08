@@ -185,17 +185,21 @@ def create_citation(citation: schemas.Citation):
         return schemas.Citation.from_orm(crud.create_citation(db, citation))
 
 
-@app.post(
-    "/search/",
-    response_model=List[schemas.SearchResults],
-    status_code=status.HTTP_200_OK,
+@app.get(
+    "/search/", response_model=List[schemas.TextSearchResults], status_code=status.HTTP_200_OK, 
 )
-def search_request(request: schemas.SearchRequest):
+def search_request(request: Request, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
     with SessionManager() as db:
-        return [
-            schemas.SearchResults.from_orm(request)
-            for request in crud.get_search(db, request)
+        texts = [
+            schemas.TextSearchResults.from_orm(request)
+            for request in crud.get_search(db, tag, author, venue_name, year)
         ]
+        if texts !=[]:
+            return templates.TemplateResponse(
+                "list-articles.html", {"request" : request, "texts": texts}
+            )
+        else:
+            return RedirectResponse('/texts/')
 
 
 @app.get("/text/add", status_code=status.HTTP_200_OK)
