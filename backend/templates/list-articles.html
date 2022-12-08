@@ -60,9 +60,16 @@
     </style>
   </head>
   <body>
-    
-<h1 style="margin-left:10px;"> Found articles </h1>
-
+<div> 
+  <h1 class="justify-content-start" style="margin-left:10px;" class="col-4"> Found articles </h1>
+  <form action="http://localhost:8000/search/" method="GET" class="justify-content-end d-flex у col-xl-14" style="margin-left:10px; margin-right:10px;">
+    <input style="margin-right:3px;" type="text" class="col-2 form-group" name="tag" placeholder="tag">
+    <input style="margin-right:3px;" type="text" class="col-2 form-group" name="author" placeholder="author">
+    <input style="margin-right:3px;" type="text" class="col-2 form-group" name="venue_name" placeholder="venue name">
+    <input style="margin-right:4px;" type="text" class="col-2 form-group" name="year" placeholder="year">
+    <button type="submit" class="btn btn-primary"> Search </button>
+  </form>
+</div>  
 <div class="list-group w-auto">
   {% for text in texts %}
   <a href="http://localhost:8000/text/?text_id={{ text.id }}" class="list-group-item list-group-item-action d-flex gap-3 w-100 py-3" aria-current="true">
