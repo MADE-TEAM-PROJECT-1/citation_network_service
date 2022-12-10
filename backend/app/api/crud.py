@@ -1,5 +1,6 @@
 from collections import Counter
 import logging
+import pandas as pd
 from typing import List
 from uuid import UUID, uuid1
 from datetime import date
@@ -9,11 +10,21 @@ from fastapi import HTTPException, status
 from passlib import context
 from sqlalchemy.orm import Session
 from app.core.config import SCHEMA_NAME, LOGS_DIR, LOGS_MESSAGE_FORMAT
+from sqlalchemy import select
 
 logging.basicConfig(filename=LOGS_DIR, level=logging.DEBUG, format=LOGS_MESSAGE_FORMAT, filemode="a+")
 
 def get_cur_date() -> date:
     return date.today()
+
+def make_dict(data: List[schemas.TextInput]):
+    rows = []
+    for a in data:
+        q = a.__dict__
+        q['authors'] = [author.__dict__ for author in q['authors']]
+        rows.append(q)
+    df =  pd.DataFrame.from_records(rows)
+    return df
 
 class Hasher:
     def __init__(self):
@@ -28,13 +39,13 @@ class Hasher:
         return self.pwd_context.hash(password)
 
 
-def get_search_loggs(db: Session, user_id: UUID, limit: int):
+def get_search_loggs(db: Session, user_id: UUID, limit: int = 10):
     logging.info(f"{__name__} called")
 
     answers = []
-    ans = db.query(models.StoredSearch.id).filter(models.StoredSearch.user_id == user_id)
-   # ans = db.execute(f"SELECT * FROM StoredSearch WHERE user_id == '{user_id}' LIMIT 20")
+    ans = db.query(models.SearchHistory).filter(models.SearchHistory.user_id == user_id).limit(limit)
     for item in ans:
+                logging.info(f"items are {item}")
                 answers.append(item)
     result = set(sorted(answers, key=Counter(answers).get, reverse=True))
     return result
@@ -42,19 +53,32 @@ def get_search_loggs(db: Session, user_id: UUID, limit: int):
 
 
 def create_stored_search(db: Session, user_id : UUID, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
-    new_stored_search = models.StoredSearch(
+    logging.info(f"{__name__} called")
+    logging.info(f"currrent date is {get_cur_date()}")
+    new_stored_search=models.SearchHistory(
         user_id=user_id,
-        request_date = get_cur_date(),
-        tag = tag ,
-        author = author,
-        venue_name = venue_name,
-        year = int(year)
+        request_date=get_cur_date(),
+        search_tag=tag,
+        author=author,
+        venue_name=venue_name,
+        year=int(year)
    )
     db.add(new_stored_search)
     db.commit()
     db.refresh(new_stored_search)
 
     return new_stored_search
+
+def get_search(db: Session, search_id: UUID):
+    logging.info(f"{__name__} called")
+    search = db.query(models.SearchHistory).filter(models.SearchHistory.id == search_id).first()
+
+    if search is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, detail="Search not found"
+        )
+
+    return search
 
 
 def get_user_by_login(db: Session, login: str):

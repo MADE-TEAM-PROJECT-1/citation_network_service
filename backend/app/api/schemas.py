@@ -113,14 +113,15 @@ class SearchResults(BaseModel):
     class Config:
         orm_mode = True
 
-class StoredSearch(BaseModel):
+class SearchHistory(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
-    user_id: Optional[UUID] = Field(default_factory=uuid1)
+    user_id: Optional[UUID] = Field(default_factory=uuid1, nullable=True)
     request_date: date
-    tag: str 
+    search_tag: str 
     author: str
     venue_name: str 
     year: int
+
     class Config: 
         orm_mode = True
 
@@ -142,7 +143,7 @@ class ArticlesRated(BaseModel):
 
     class Config:
         orm_nodel = True
-    
+
 
 
 

@@ -144,30 +144,14 @@ class Tags(Base):
 
     texts = relationship("Text", secondary=text_tags, back_populates="tags")
 
-
-#stored_search = Table(
-#    "stored_search",
-#    Base.metadata,
-#    Column("id", UUID(as_uuid=True), primary_key=True, default=uuid1),
-#    Column("user_id", ForeignKey("user.id")),
-#    Column("request_date", Date),
- #   Column("tag",  String),
- #   Column("author", String),
- #   Column("venue_name", String),
- #   Column("year", String),
- #   schema="citation_network",
-#)
-#class StoredSearch(Base):
-#    __table__ = stored_search
-
-class StoredSearch(Base):
-    __tablename__ = "stored_search"
+class SearchHistory(Base):
+    __tablename__ = "search_history"
     __table_args__ = {"schema": "citation_network"}
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("user.id"), nullable=True)
 
-    user_id = Column(UUID(as_uuid=True), ForeignKey("User.id"))
     request_date = Column(Date)
-    tag = Column(String, nullable = True, default = "") 
+    search_tag = Column(String, nullable = True, default = "") 
     author = Column(String, nullable = True, default = "")
     venue_name = Column(String, nullable = True, default = "")
     year = Column(Integer, nullable = True, default = 0)
