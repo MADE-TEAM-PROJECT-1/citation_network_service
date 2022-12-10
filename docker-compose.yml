@@ -17,6 +17,18 @@ services:
     restart: always
     networks:
       - isolation-network
+  recsys_inference:
+    build:
+      context: ./recsys_inference
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8080
+    ports:
+      - 8080:8080
+    depends_on:
+      - server
+    restart: always
+    networks:
+      - isolation-network
   server:
     build:
       context: ./backend

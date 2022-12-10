@@ -10,14 +10,14 @@ import dill
 from datetime import datetime
 
 
-url = (
-    "https://drive.google.com/file/d/1yjeG6-kIpjoxFA75M5wUuHlsmJhpGnfw/view?usp=sharing"
-)
-gdown.download(url=url, output="data.zip", quiet=False, fuzzy=True)
+# url = (
+#     "https://drive.google.com/file/d/1yjeG6-kIpjoxFA75M5wUuHlsmJhpGnfw/view?usp=sharing"
+# )
+# gdown.download(url=url, output="data.zip", quiet=False, fuzzy=True)
 
-with ZipFile("data.zip", "r") as zip_file:
-    zip_file.extractall()
-os.remove("data.zip")
+# with ZipFile("data.zip", "r") as zip_file:
+#     zip_file.extractall()
+# os.remove("data.zip")
 
 engine = create_engine("postgresql://postgres:postgres@0.0.0.0:5432/postgres")
 

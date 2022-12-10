@@ -1,0 +1,588 @@
+2022-12-10 17:10:13,698 metadata is MetaData()
+2022-12-10 17:10:13,845 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-10 17:10:13,847 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-10 17:10:13,849 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-10 17:10:13,945 Started server process [8]
+2022-12-10 17:10:13,947 Waiting for application startup.
+2022-12-10 17:10:13,968 select pg_catalog.version()
+2022-12-10 17:10:13,969 [raw sql] {}
+2022-12-10 17:10:13,972 select current_schema()
+2022-12-10 17:10:13,974 [raw sql] {}
+2022-12-10 17:10:13,979 show standard_conforming_strings
+2022-12-10 17:10:13,979 [raw sql] {}
+2022-12-10 17:10:13,982 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-10 17:10:13,983 [generated in 0.00099s] {'schema': 'citation_network'}
+2022-12-10 17:10:13,985 CREATE SCHEMA citation_network
+2022-12-10 17:10:13,986 [no key 0.00096s] {}
+2022-12-10 17:10:13,990 COMMIT
+2022-12-10 17:10:13,992 BEGIN (implicit)
+2022-12-10 17:10:13,994 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:13,995 [generated in 0.00126s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-10 17:10:14,000 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,002 [cached since 0.007898s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-10 17:10:14,005 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,007 [cached since 0.01264s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-10 17:10:14,009 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,010 [cached since 0.01596s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-10 17:10:14,012 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,013 [cached since 0.019s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-10 17:10:14,015 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,016 [cached since 0.02209s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-10 17:10:14,018 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,019 [cached since 0.02479s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-10 17:10:14,021 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,022 [cached since 0.0277s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-10 17:10:14,024 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,026 [cached since 0.03152s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-10 17:10:14,030 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,032 [cached since 0.03846s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-10 17:10:14,038 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,040 [cached since 0.04609s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-10 17:10:14,045 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,047 [cached since 0.05277s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-10 17:10:14,052 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,054 [cached since 0.05981s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-10 17:10:14,059 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,061 [cached since 0.067s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-10 17:10:14,064 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,065 [cached since 0.07119s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-10 17:10:14,068 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:10:14,069 [cached since 0.07484s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-10 17:10:14,072 
+CREATE TABLE citation_network.text (
+	id UUID NOT NULL, 
+	title VARCHAR, 
+	year INTEGER, 
+	n_citation INTEGER, 
+	abstract VARCHAR, 
+	venue_name VARCHAR, 
+	PRIMARY KEY (id)
+)
+
+
+2022-12-10 17:10:14,073 [no key 0.00103s] {}
+2022-12-10 17:10:14,091 CREATE INDEX ix_citation_network_text_title ON citation_network.text (title)
+2022-12-10 17:10:14,092 [no key 0.00121s] {}
+2022-12-10 17:10:14,096 
+CREATE TABLE citation_network.keywords (
+	id UUID NOT NULL, 
+	name VARCHAR, 
+	PRIMARY KEY (id)
+)
+
+
+2022-12-10 17:10:14,097 [no key 0.00094s] {}
+2022-12-10 17:10:14,104 CREATE UNIQUE INDEX ix_citation_network_keywords_name ON citation_network.keywords (name)
+2022-12-10 17:10:14,105 [no key 0.00106s] {}
+2022-12-10 17:10:14,108 
+CREATE TABLE citation_network.author (
+	id UUID NOT NULL, 
+	name VARCHAR, 
+	PRIMARY KEY (id)
+)
+
+
+2022-12-10 17:10:14,109 [no key 0.00080s] {}
+2022-12-10 17:10:14,115 CREATE INDEX ix_citation_network_author_name ON citation_network.author (name)
+2022-12-10 17:10:14,117 [no key 0.00162s] {}
+2022-12-10 17:10:14,123 
+CREATE TABLE citation_network.fos (
+	id UUID NOT NULL, 
+	name VARCHAR, 
+	PRIMARY KEY (id)
+)
+
+
+2022-12-10 17:10:14,124 [no key 0.00135s] {}
+2022-12-10 17:10:14,131 CREATE UNIQUE INDEX ix_citation_network_fos_name ON citation_network.fos (name)
+2022-12-10 17:10:14,132 [no key 0.00085s] {}
+2022-12-10 17:10:14,135 
+CREATE TABLE citation_network.org (
+	id UUID NOT NULL, 
+	name VARCHAR, 
+	PRIMARY KEY (id)
+)
+
+
+2022-12-10 17:10:14,136 [no key 0.00089s] {}
+2022-12-10 17:10:14,144 
+CREATE TABLE citation_network.tags (
+	id UUID NOT NULL, 
+	name VARCHAR, 
+	PRIMARY KEY (id)
+)
+
+
+2022-12-10 17:10:14,147 [no key 0.00261s] {}
+2022-12-10 17:10:14,155 CREATE UNIQUE INDEX ix_citation_network_tags_name ON citation_network.tags (name)
+2022-12-10 17:10:14,156 [no key 0.00107s] {}
+2022-12-10 17:10:14,159 
+CREATE TABLE citation_network.text_keywords (
+	text_keywords_id UUID NOT NULL, 
+	text_id UUID, 
+	keyword_id UUID, 
+	PRIMARY KEY (text_keywords_id), 
+	FOREIGN KEY(text_id) REFERENCES citation_network.text (id), 
+	FOREIGN KEY(keyword_id) REFERENCES citation_network.keywords (id)
+)
+
+
+2022-12-10 17:10:14,160 [no key 0.00108s] {}
+2022-12-10 17:10:14,168 
+CREATE TABLE citation_network.text_author (
+	author_keywords_id UUID NOT NULL, 
+	text_id UUID, 
+	author_id UUID, 
+	PRIMARY KEY (author_keywords_id), 
+	FOREIGN KEY(text_id) REFERENCES citation_network.text (id), 
+	FOREIGN KEY(author_id) REFERENCES citation_network.author (id)
+)
+
+
+2022-12-10 17:10:14,169 [no key 0.00110s] {}
+2022-12-10 17:10:14,176 
+CREATE TABLE citation_network.text_fos (
+	text_fos_id UUID NOT NULL, 
+	fos_id UUID, 
+	text_id UUID, 
+	PRIMARY KEY (text_fos_id), 
+	FOREIGN KEY(fos_id) REFERENCES citation_network.fos (id), 
+	FOREIGN KEY(text_id) REFERENCES citation_network.text (id)
+)
+
+
+2022-12-10 17:10:14,177 [no key 0.00116s] {}
+2022-12-10 17:10:14,185 
+CREATE TABLE citation_network.org_author (
+	org_author_id UUID NOT NULL, 
+	org_id UUID, 
+	author_id UUID, 
+	PRIMARY KEY (org_author_id), 
+	FOREIGN KEY(org_id) REFERENCES citation_network.org (id), 
+	FOREIGN KEY(author_id) REFERENCES citation_network.author (id)
+)
+
+
+2022-12-10 17:10:14,186 [no key 0.00128s] {}
+2022-12-10 17:10:14,193 
+CREATE TABLE citation_network.text_tags (
+	tag_text_id UUID NOT NULL, 
+	tag_id UUID, 
+	text_id UUID, 
+	PRIMARY KEY (tag_text_id), 
+	FOREIGN KEY(tag_id) REFERENCES citation_network.tags (id), 
+	FOREIGN KEY(text_id) REFERENCES citation_network.text (id)
+)
+
+
+2022-12-10 17:10:14,195 [no key 0.00130s] {}
+2022-12-10 17:10:14,203 
+CREATE TABLE citation_network.citation (
+	citation_id UUID NOT NULL, 
+	text_id_from UUID, 
+	text_id_to UUID, 
+	PRIMARY KEY (citation_id), 
+	FOREIGN KEY(text_id_from) REFERENCES citation_network.text (id), 
+	FOREIGN KEY(text_id_to) REFERENCES citation_network.text (id)
+)
+
+
+2022-12-10 17:10:14,205 [no key 0.00125s] {}
+2022-12-10 17:10:14,212 
+CREATE TABLE citation_network."user" (
+	id UUID NOT NULL, 
+	login VARCHAR NOT NULL, 
+	password_hash VARCHAR NOT NULL, 
+	author_id UUID, 
+	email VARCHAR, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(author_id) REFERENCES citation_network.author (id)
+)
+
+
+2022-12-10 17:10:14,213 [no key 0.00104s] {}
+2022-12-10 17:10:14,221 CREATE UNIQUE INDEX ix_citation_network_user_login ON citation_network."user" (login)
+2022-12-10 17:10:14,222 [no key 0.00088s] {}
+2022-12-10 17:10:14,226 
+CREATE TABLE citation_network.search_history (
+	id UUID NOT NULL, 
+	user_id UUID, 
+	request_date DATE, 
+	search_tag VARCHAR, 
+	author VARCHAR, 
+	venue_name VARCHAR, 
+	year INTEGER, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES citation_network."user" (id)
+)
+
+
+2022-12-10 17:10:14,226 [no key 0.00078s] {}
+2022-12-10 17:10:14,234 
+CREATE TABLE citation_network.articles_opened (
+	id UUID NOT NULL, 
+	user_id UUID, 
+	text_id UUID, 
+	request_date DATE, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES citation_network."user" (id), 
+	FOREIGN KEY(text_id) REFERENCES citation_network.text (id)
+)
+
+
+2022-12-10 17:10:14,235 [no key 0.00092s] {}
+2022-12-10 17:10:14,243 
+CREATE TABLE citation_network.articles_rated (
+	id UUID NOT NULL, 
+	user_id UUID, 
+	text_id UUID, 
+	request_date DATE, 
+	mark INTEGER, 
+	PRIMARY KEY (id), 
+	FOREIGN KEY(user_id) REFERENCES citation_network."user" (id), 
+	FOREIGN KEY(text_id) REFERENCES citation_network.text (id)
+)
+
+
+2022-12-10 17:10:14,246 [no key 0.00280s] {}
+2022-12-10 17:10:14,266 COMMIT
+2022-12-10 17:10:14,272 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-10 17:10:14,274 [generated in 0.00152s] {'schema': 'public'}
+2022-12-10 17:10:14,278  table names are []
+2022-12-10 17:10:14,279 Application startup complete.
+2022-12-10 17:15:06,406 Shutting down
+2022-12-10 17:15:06,509 Waiting for application shutdown.
+2022-12-10 17:15:06,511 Application shutdown complete.
+2022-12-10 17:15:06,513 Finished server process [8]
+2022-12-10 17:15:09,008 metadata is MetaData()
+2022-12-10 17:15:09,163 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-10 17:15:09,164 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-10 17:15:09,165 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-10 17:15:09,238 Started server process [17]
+2022-12-10 17:15:09,240 Waiting for application startup.
+2022-12-10 17:15:09,249 select pg_catalog.version()
+2022-12-10 17:15:09,249 [raw sql] {}
+2022-12-10 17:15:09,251 select current_schema()
+2022-12-10 17:15:09,252 [raw sql] {}
+2022-12-10 17:15:09,253 show standard_conforming_strings
+2022-12-10 17:15:09,254 [raw sql] {}
+2022-12-10 17:15:09,255 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-10 17:15:09,256 [generated in 0.00054s] {'schema': 'citation_network'}
+2022-12-10 17:15:09,258 BEGIN (implicit)
+2022-12-10 17:15:09,259 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,259 [generated in 0.00061s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-10 17:15:09,261 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,262 [cached since 0.003224s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-10 17:15:09,264 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,264 [cached since 0.005787s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-10 17:15:09,266 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,266 [cached since 0.007765s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-10 17:15:09,268 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,268 [cached since 0.009556s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-10 17:15:09,269 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,270 [cached since 0.01145s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-10 17:15:09,271 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,272 [cached since 0.0135s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-10 17:15:09,274 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,274 [cached since 0.01592s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-10 17:15:09,277 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,278 [cached since 0.0191s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-10 17:15:09,280 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,280 [cached since 0.02175s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-10 17:15:09,282 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,283 [cached since 0.02464s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-10 17:15:09,285 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,286 [cached since 0.02758s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-10 17:15:09,288 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,289 [cached since 0.03001s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-10 17:15:09,290 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,291 [cached since 0.03243s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-10 17:15:09,293 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,293 [cached since 0.03495s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-10 17:15:09,295 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:15:09,296 [cached since 0.03738s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-10 17:15:09,297 COMMIT
+2022-12-10 17:15:09,299 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-10 17:15:09,300 [generated in 0.00099s] {'schema': 'public'}
+2022-12-10 17:15:09,303  table names are []
+2022-12-10 17:15:09,304 Application startup complete.
+2022-12-10 17:21:13,854 Shutting down
+2022-12-10 17:21:13,958 Waiting for application shutdown.
+2022-12-10 17:21:13,959 Application shutdown complete.
+2022-12-10 17:21:13,960 Finished server process [17]
+2022-12-10 17:39:38,911 metadata is MetaData()
+2022-12-10 17:39:39,109 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-10 17:39:39,110 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-10 17:39:39,111 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-10 17:39:39,216 Started server process [8]
+2022-12-10 17:39:39,217 Waiting for application startup.
+2022-12-10 17:39:39,235 select pg_catalog.version()
+2022-12-10 17:39:39,236 [raw sql] {}
+2022-12-10 17:39:39,239 select current_schema()
+2022-12-10 17:39:39,240 [raw sql] {}
+2022-12-10 17:39:39,243 show standard_conforming_strings
+2022-12-10 17:39:39,244 [raw sql] {}
+2022-12-10 17:39:39,247 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-10 17:39:39,247 [generated in 0.00089s] {'schema': 'citation_network'}
+2022-12-10 17:39:39,251 BEGIN (implicit)
+2022-12-10 17:39:39,253 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,255 [generated in 0.00147s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-10 17:39:39,259 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,261 [cached since 0.008035s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-10 17:39:39,266 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,267 [cached since 0.01425s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-10 17:39:39,271 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,272 [cached since 0.01873s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-10 17:39:39,275 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,276 [cached since 0.02313s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-10 17:39:39,279 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,280 [cached since 0.02727s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-10 17:39:39,283 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,284 [cached since 0.03071s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-10 17:39:39,287 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,288 [cached since 0.03474s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-10 17:39:39,290 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,292 [cached since 0.03847s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-10 17:39:39,295 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,296 [cached since 0.04331s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-10 17:39:39,299 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,301 [cached since 0.04767s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-10 17:39:39,304 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,305 [cached since 0.05166s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-10 17:39:39,307 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,308 [cached since 0.05534s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-10 17:39:39,313 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,314 [cached since 0.06076s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-10 17:39:39,316 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,318 [cached since 0.06432s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-10 17:39:39,324 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:39:39,326 [cached since 0.07231s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-10 17:39:39,330 COMMIT
+2022-12-10 17:39:39,333 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-10 17:39:39,334 [generated in 0.00143s] {'schema': 'public'}
+2022-12-10 17:39:39,339  table names are []
+2022-12-10 17:39:39,340 Application startup complete.
+2022-12-10 17:41:00,205 Shutting down
+2022-12-10 17:41:00,308 Waiting for application shutdown.
+2022-12-10 17:41:00,310 Application shutdown complete.
+2022-12-10 17:41:00,311 Finished server process [8]
+2022-12-10 17:42:02,090 metadata is MetaData()
+2022-12-10 17:42:02,219 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-10 17:42:02,220 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-10 17:42:02,220 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-10 17:42:02,284 Started server process [8]
+2022-12-10 17:42:02,285 Waiting for application startup.
+2022-12-10 17:42:02,295 select pg_catalog.version()
+2022-12-10 17:42:02,296 [raw sql] {}
+2022-12-10 17:42:02,298 select current_schema()
+2022-12-10 17:42:02,298 [raw sql] {}
+2022-12-10 17:42:02,300 show standard_conforming_strings
+2022-12-10 17:42:02,301 [raw sql] {}
+2022-12-10 17:42:02,303 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-10 17:42:02,304 [generated in 0.00119s] {'schema': 'citation_network'}
+2022-12-10 17:42:02,307 BEGIN (implicit)
+2022-12-10 17:42:02,308 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,309 [generated in 0.00106s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-10 17:42:02,312 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,313 [cached since 0.004695s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-10 17:42:02,315 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,316 [cached since 0.007161s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-10 17:42:02,317 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,318 [cached since 0.009392s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-10 17:42:02,320 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,320 [cached since 0.01203s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-10 17:42:02,323 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,324 [cached since 0.01593s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-10 17:42:02,326 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,327 [cached since 0.01891s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-10 17:42:02,329 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,330 [cached since 0.02207s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-10 17:42:02,332 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,333 [cached since 0.02445s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-10 17:42:02,335 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,335 [cached since 0.0271s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-10 17:42:02,337 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,338 [cached since 0.02981s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-10 17:42:02,340 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,341 [cached since 0.03219s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-10 17:42:02,343 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,344 [cached since 0.03516s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-10 17:42:02,345 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,346 [cached since 0.03771s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-10 17:42:02,348 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,348 [cached since 0.03996s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-10 17:42:02,350 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:42:02,351 [cached since 0.04218s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-10 17:42:02,352 COMMIT
+2022-12-10 17:42:02,354 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-10 17:42:02,355 [generated in 0.00102s] {'schema': 'public'}
+2022-12-10 17:42:02,359  table names are []
+2022-12-10 17:42:02,360 Application startup complete.
+2022-12-10 17:42:44,654 Shutting down
+2022-12-10 17:42:44,756 Waiting for application shutdown.
+2022-12-10 17:42:44,758 Application shutdown complete.
+2022-12-10 17:42:44,760 Finished server process [8]
+2022-12-10 17:43:05,298 metadata is MetaData()
+2022-12-10 17:43:05,449 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-10 17:43:05,450 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-10 17:43:05,450 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-10 17:43:05,598 Started server process [8]
+2022-12-10 17:43:05,599 Waiting for application startup.
+2022-12-10 17:43:05,609 select pg_catalog.version()
+2022-12-10 17:43:05,610 [raw sql] {}
+2022-12-10 17:43:05,612 select current_schema()
+2022-12-10 17:43:05,613 [raw sql] {}
+2022-12-10 17:43:05,614 show standard_conforming_strings
+2022-12-10 17:43:05,615 [raw sql] {}
+2022-12-10 17:43:05,617 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-10 17:43:05,618 [generated in 0.00092s] {'schema': 'citation_network'}
+2022-12-10 17:43:05,621 BEGIN (implicit)
+2022-12-10 17:43:05,623 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,625 [generated in 0.00161s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-10 17:43:05,628 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,629 [cached since 0.005323s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-10 17:43:05,631 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,632 [cached since 0.008813s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-10 17:43:05,634 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,635 [cached since 0.01156s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-10 17:43:05,636 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,637 [cached since 0.01394s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-10 17:43:05,639 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,640 [cached since 0.01635s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-10 17:43:05,641 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,642 [cached since 0.01861s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-10 17:43:05,644 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,645 [cached since 0.0217s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-10 17:43:05,647 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,648 [cached since 0.02477s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-10 17:43:05,650 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,652 [cached since 0.02892s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-10 17:43:05,660 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,661 [cached since 0.03734s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-10 17:43:05,664 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,664 [cached since 0.04122s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-10 17:43:05,667 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,667 [cached since 0.04424s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-10 17:43:05,670 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,670 [cached since 0.04717s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-10 17:43:05,672 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,673 [cached since 0.04966s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-10 17:43:05,675 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 17:43:05,676 [cached since 0.05248s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-10 17:43:05,678 COMMIT
+2022-12-10 17:43:05,680 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-10 17:43:05,681 [generated in 0.00105s] {'schema': 'public'}
+2022-12-10 17:43:05,685  table names are []
+2022-12-10 17:43:05,685 Application startup complete.
+2022-12-10 18:39:45,080 Shutting down
+2022-12-10 18:39:45,189 Waiting for application shutdown.
+2022-12-10 18:39:45,200 Application shutdown complete.
+2022-12-10 18:39:45,206 Finished server process [8]
+2022-12-10 18:39:48,477 metadata is MetaData()
+2022-12-10 18:39:48,652 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-10 18:39:48,653 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-10 18:39:48,653 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-10 18:39:48,713 Started server process [21]
+2022-12-10 18:39:48,714 Waiting for application startup.
+2022-12-10 18:39:48,749 select pg_catalog.version()
+2022-12-10 18:39:48,750 [raw sql] {}
+2022-12-10 18:39:48,753 select current_schema()
+2022-12-10 18:39:48,754 [raw sql] {}
+2022-12-10 18:39:48,757 show standard_conforming_strings
+2022-12-10 18:39:48,758 [raw sql] {}
+2022-12-10 18:39:48,760 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-10 18:39:48,761 [generated in 0.00096s] {'schema': 'citation_network'}
+2022-12-10 18:39:48,764 BEGIN (implicit)
+2022-12-10 18:39:48,765 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,766 [generated in 0.00072s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-10 18:39:48,769 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,770 [cached since 0.00536s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-10 18:39:48,773 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,774 [cached since 0.008795s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-10 18:39:48,776 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,777 [cached since 0.01179s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-10 18:39:48,779 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,780 [cached since 0.01509s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-10 18:39:48,786 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,787 [cached since 0.02168s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-10 18:39:48,789 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,790 [cached since 0.02487s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-10 18:39:48,792 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,793 [cached since 0.02808s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-10 18:39:48,795 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,796 [cached since 0.03104s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-10 18:39:48,798 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,799 [cached since 0.03376s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-10 18:39:48,801 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,802 [cached since 0.0372s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-10 18:39:48,805 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,806 [cached since 0.04132s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-10 18:39:48,809 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,810 [cached since 0.04511s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-10 18:39:48,812 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,814 [cached since 0.04865s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-10 18:39:48,817 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,819 [cached since 0.05344s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-10 18:39:48,821 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:39:48,822 [cached since 0.05645s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-10 18:39:48,824 COMMIT
+2022-12-10 18:39:48,826 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-10 18:39:48,827 [generated in 0.00084s] {'schema': 'public'}
+2022-12-10 18:39:48,832  table names are []
+2022-12-10 18:39:48,833 Application startup complete.
+2022-12-10 18:48:54,709 Shutting down
+2022-12-10 18:48:54,835 Waiting for application shutdown.
+2022-12-10 18:48:54,849 Application shutdown complete.
+2022-12-10 18:48:54,851 Finished server process [21]
+2022-12-10 18:48:59,693 metadata is MetaData()
+2022-12-10 18:48:59,921 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-10 18:48:59,922 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-10 18:48:59,923 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-10 18:49:00,003 Started server process [28]
+2022-12-10 18:49:00,004 Waiting for application startup.
+2022-12-10 18:49:00,057 select pg_catalog.version()
+2022-12-10 18:49:00,058 [raw sql] {}
+2022-12-10 18:49:00,064 select current_schema()
+2022-12-10 18:49:00,065 [raw sql] {}
+2022-12-10 18:49:00,068 show standard_conforming_strings
+2022-12-10 18:49:00,070 [raw sql] {}
+2022-12-10 18:49:00,072 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-10 18:49:00,073 [generated in 0.00085s] {'schema': 'citation_network'}
+2022-12-10 18:49:00,078 BEGIN (implicit)
+2022-12-10 18:49:00,080 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,081 [generated in 0.00122s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-10 18:49:00,085 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,086 [cached since 0.006414s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-10 18:49:00,088 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,089 [cached since 0.009178s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-10 18:49:00,091 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,092 [cached since 0.01177s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-10 18:49:00,094 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,095 [cached since 0.01504s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-10 18:49:00,097 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,097 [cached since 0.01765s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-10 18:49:00,099 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,100 [cached since 0.02052s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-10 18:49:00,102 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,104 [cached since 0.02411s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-10 18:49:00,106 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,107 [cached since 0.02677s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-10 18:49:00,108 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,109 [cached since 0.02952s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-10 18:49:00,112 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,113 [cached since 0.03288s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-10 18:49:00,115 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,116 [cached since 0.03617s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-10 18:49:00,118 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,119 [cached since 0.03941s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-10 18:49:00,121 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,122 [cached since 0.04225s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-10 18:49:00,124 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,125 [cached since 0.0457s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-10 18:49:00,128 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-10 18:49:00,130 [cached since 0.04995s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-10 18:49:00,132 COMMIT
+2022-12-10 18:49:00,135 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-10 18:49:00,136 [generated in 0.00127s] {'schema': 'public'}
+2022-12-10 18:49:00,140  table names are []
+2022-12-10 18:49:00,140 Application startup complete.
