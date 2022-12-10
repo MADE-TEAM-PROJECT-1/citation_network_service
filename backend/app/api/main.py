@@ -1,21 +1,22 @@
 import logging
 import sys
-from typing import List
+from typing import List, Optional
 from datetime import datetime
-from uuid import UUID
+from uuid import UUID, uuid1
+import pandas as pd
 
+from app.api.graph_visualization import graph_model
 from app.api import crud, models, schemas
 from app.api.database import SessionLocal, engine
 from app.core.config import SCHEMA_NAME, LOGS_DIR, LOGS_MESSAGE_FORMAT
-from fastapi import FastAPI, HTTPException, Request, status
+from fastapi import FastAPI, HTTPException, Request, status, Response
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from sqlalchemy.schema import CreateSchema
-
+from pydantic import BaseModel, Field
 
 logging.basicConfig(filename=LOGS_DIR, level=logging.DEBUG, format=LOGS_MESSAGE_FORMAT, filemode="a+")
-
 class SessionManager:
     def __init__(self):
         logging.debug("Session starting...")
@@ -28,8 +29,9 @@ class SessionManager:
         logging.debug("Session ending...")
         self.db.close()
 
-
+current_user_id = None
 app = FastAPI()
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
@@ -38,12 +40,21 @@ async def startup_event():
     if not engine.dialect.has_schema(engine, SCHEMA_NAME):
         engine.execute(CreateSchema(SCHEMA_NAME))
     models.Base.metadata.create_all(bind=engine)
+    logging.info(f" table names are {engine.table_names()}")
 
-@app.post("logging/stored_search/",status_code=status.HTTP_200_OK, response_class=RedirectResponse)
-def add_stored_search(request: Request, stored_search: schemas.StoredSearch):
+@app.post("/visualization",
+    status_code=status.HTTP_200_OK,
+    response_class=HTMLResponse,
+)
+def visuaize_graph(request: Request, data: List[schemas.TextInput], cut_size:int = 10, start_id:str = ""):
     logging.info(f"{__name__} called")
-    with SessionManager() as db:
-        return schemas.StoredSearch.from_orm(crud.create_stored_search(db, stored_search))
+    df =  crud.make_dict(data)
+    logging.info(f"dataframe is {df}")
+    g = graph_model(df, cut_size)
+    g.build_graph(start_id)
+    page = g.show_graph()
+    logging.info(f"page is {page}")
+    return page
 
 @app.get(
     "/users/registration/",
@@ -98,8 +109,11 @@ def login_user(request: Request, login: str, password: str):
             get_params = "?error=" + '+'.join(ex.detail.split(' ')) + "&error_form=login"
             logging.info("failed to log in user params:" + get_params)
             return RedirectResponse(f"/login/{get_params}")
-        request.state.__setattr__('user', user.id)
-        logging.info(f"request user id is{request.state.user}")
+        logging.info(f"user id is {user.id}")
+       # request.state.__setattr__('user', user.id)
+        global current_user_id
+        current_user_id = user.id
+    #    logging.info(f"request user id is{request.state.user}")
         return RedirectResponse("/texts/")
 
 @app.put(
@@ -170,6 +184,22 @@ def get_text(request: Request, text_id: UUID):
             {"request": request, "text": text},
         )
 
+@app.get(
+    "/loggs/",
+    response_model=schemas.Text,
+    response_class=HTMLResponse,
+    status_code=status.HTTP_200_OK,
+)
+def get_text(request: Request, search_id: UUID):
+    logging.info(f"{__name__} called")
+    with SessionManager() as db:
+        search = crud.get_search(db, search_id)
+        return templates.TemplateResponse(
+            "search.html",
+            {"request": request, "search": search},
+        )
+
+
 
 @app.get("/items/{id}", response_class=HTMLResponse)
 async def read_item(request: Request, id: str):
@@ -187,14 +217,14 @@ def get_texts(request: Request, skip: int = 0, limit: int = 10):
             "list-articles.html", {"request": request, "texts": texts}
         )
 
-@app.get("/loggs/", response_model=List[schemas.StoredSearch], status_code=status.HTTP_200_OK)
-def get_stored_search(request: Request, user_id : str,  limit: int = 10):
+@app.get("/loggs/search", response_model=List[schemas.SearchHistory], status_code=status.HTTP_200_OK)
+def get_stored_search(request: Request, user_id : UUID,  limit: int = 10):
     logging.info(f"{__name__} called")
     with SessionManager() as db:
-        searches = crud.get_search_loggs(db, user_id, limit)
-
+        searches =[ schemas.SearchHistory.from_orm(request) for request in  crud.get_search_loggs(db, user_id, limit) ] 
+        logging.info(f"searches are {searches}")
         return templates.TemplateResponse(
-            "list-articles.html", {"request": request, "searches": searches}
+            "list-searches.html", {"request": request, "searches": searches}
         )
 # @app.post("/text/", response_model=schemas.Text, status_code=status.HTTP_201_CREATED)
 # def create_text(text: schemas.TextBase):
@@ -224,14 +254,9 @@ def create_citation(citation: schemas.Citation):
 def search_request(request: Request, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
     logging.info(f"{__name__} called")
     with SessionManager() as db:
-        logging.info(f"request.state is = {request.state}")
-        try:
-            user_id =  request.state.__getattr__('user')
-            if user_id == None:
-                user_id = ""
-            crud.add_search(user_id, tag, author, venue_name, year)
-        except:
-            logging.info(f"no user in logged in this session")
+        global current_user_id
+        logging.info(f"current_user_id is {current_user_id}")
+        crud.create_stored_search(db, current_user_id, tag, author, venue_name, year)
         texts = [
             schemas.SearchResults.from_orm(request)
             for request in crud.get_search(db, tag, author, venue_name, year)
