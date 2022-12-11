@@ -156,26 +156,15 @@ class SearchHistory(Base):
     venue_name = Column(String, nullable = True, default = "")
     year = Column(Integer, nullable = True, default = 0)
 
+class ArticlesOpened(Base):
+    __trablename__ = "articlesopened"
+    __table_args__ = {"schema": "citation_network"}
 
-ArticlesOpened = Table(
-    "articles_opened",
-    Base.metadata,
-    Column("id", UUID(as_uuid=True), primary_key=True, default=uuid1),
-    Column("user_id", ForeignKey("user.id")),
-    Column("text_id", ForeignKey("text.id")),
-    Column("request_date", Date),
-    schema="citation_network",
-)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
 
-#class ArticlesOpened(Base):
-#    __trablename__ = "articlesopened"
-#    __table_args__ = {"schema": "citation_network"}
-
- #   id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
-
- #   user_id =  Column(UUID(as_uuid=True), ForeignKey("user.id"))
-#    text_id =  Column(UUID(as_uuid=True), ForeignKey("text.id"))   
-  #  request_date = Column(Date)
+    user_id =  Column(UUID(as_uuid=True), ForeignKey("user.id"))
+    text_id =  Column(UUID(as_uuid=True), ForeignKey("text.id"))   
+    request_date = Column(Date)
 
 ArticlesRated = Table(
     "articles_rated",
@@ -188,16 +177,16 @@ ArticlesRated = Table(
     schema="citation_network",
 )
 
-#class ArticlesRated(Base):
- #   __trablename__ = "articlerated"
- #   __table_args__ = {"schema": "citation_network"}
+class ArticlesRated(Base):
+    __trablename__ = "articlerated"
+    __table_args__ = {"schema": "citation_network"}
 
-  #  id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
 
-   # user_id =  Column(UUID(as_uuid=True), ForeignKey("user.id"))
-   # text_id =  Column(UUID(as_uuid=True), ForeignKey("text.id"))
-   # request_date = Column(Date)
-   # mark = Column(Integer, nullable=True)
+    user_id =  Column(UUID(as_uuid=True), ForeignKey("user.id"))
+    text_id =  Column(UUID(as_uuid=True), ForeignKey("text.id"))
+    request_date = Column(Date)
+    mark = Column(Integer, nullable=True)
 
     
 

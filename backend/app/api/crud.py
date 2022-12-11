@@ -121,7 +121,8 @@ def try_add_user(db: Session, login: str, password: str, email: str):
             detail="User with this login already exist",
         )
     real_hash = password_hasher.get_password_hash(password)
-    new_user = models.User(login=login, password_hash=real_hash, email=email)
+    new_author = create_author(db, schemas.AuthorBase(name = "", orgs = []))
+    new_user = models.User(login=login, password_hash=real_hash, email=email, author_id = new_author.id)
     db.add(new_user)
     db.commit()
     return new_user
@@ -308,7 +309,7 @@ def get_author(db: Session, author_id: UUID):
 def create_author(db: Session, author: schemas.AuthorBase):
     logging.info(f"{__name__} called")
     new_author = models.Author(
-        name=author.name, orgs=get_or_create_orgs(db, author.orgs)
+        id = uuid1(),name=author.name, orgs=get_or_create_orgs(db, author.orgs)
     )
 
     db.add(new_author)

@@ -2254,3 +2254,390 @@ WHERE citation_network.articles_opened.user_id IS NULL
 2022-12-11 01:52:52,151 Waiting for application shutdown.
 2022-12-11 01:52:52,152 Application shutdown complete.
 2022-12-11 01:52:52,152 Finished server process [247]
+2022-12-11 10:58:22,656 metadata is MetaData()
+2022-12-11 10:58:23,723 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-11 10:58:23,735 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-11 10:58:23,738 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-11 10:58:24,271 Started server process [15]
+2022-12-11 10:58:24,273 Waiting for application startup.
+2022-12-11 10:58:34,308 Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 3361, in _wrap_pool_connect
+    return fn()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 320, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 884, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 486, in checkout
+    rec = pool._do_get()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/impl.py", line 146, in _do_get
+    self._dec_overflow()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 208, in raise_
+    raise exception
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/impl.py", line 143, in _do_get
+    return self._create_connection()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 266, in _create_connection
+    return _ConnectionRecord(self)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 381, in __init__
+    self.__connect()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 678, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 208, in raise_
+    raise exception
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 673, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/create.py", line 578, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 598, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "/usr/local/lib/python3.8/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: could not translate host name "db" to address: Temporary failure in name resolution
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/site-packages/starlette/routing.py", line 645, in lifespan
+    async with self.lifespan_context(app):
+  File "/usr/local/lib/python3.8/site-packages/starlette/routing.py", line 540, in __aenter__
+    await self._router.startup()
+  File "/usr/local/lib/python3.8/site-packages/starlette/routing.py", line 622, in startup
+    await handler()
+  File "/backend/./app/api/main.py", line 46, in startup_event
+    if not engine.dialect.has_schema(engine, SCHEMA_NAME):
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/dialects/postgresql/base.py", line 3509, in has_schema
+    cursor = connection.execute(
+  File "<string>", line 2, in execute
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/deprecations.py", line 402, in warned
+    return fn(*args, **kwargs)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 3256, in execute
+    connection = self.connect(close_with_result=True)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 3315, in connect
+    return self._connection_cls(self, close_with_result=close_with_result)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 96, in __init__
+    else engine.raw_connection()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 3394, in raw_connection
+    return self._wrap_pool_connect(self.pool.connect, _connection)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 3364, in _wrap_pool_connect
+    Connection._handle_dbapi_exception_noconnection(
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 2198, in _handle_dbapi_exception_noconnection
+    util.raise_(
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 208, in raise_
+    raise exception
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/base.py", line 3361, in _wrap_pool_connect
+    return fn()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 320, in connect
+    return _ConnectionFairy._checkout(self)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 884, in _checkout
+    fairy = _ConnectionRecord.checkout(pool)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 486, in checkout
+    rec = pool._do_get()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/impl.py", line 146, in _do_get
+    self._dec_overflow()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 208, in raise_
+    raise exception
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/impl.py", line 143, in _do_get
+    return self._create_connection()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 266, in _create_connection
+    return _ConnectionRecord(self)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 381, in __init__
+    self.__connect()
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 678, in __connect
+    pool.logger.debug("Error on connect(): %s", e)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/langhelpers.py", line 70, in __exit__
+    compat.raise_(
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/util/compat.py", line 208, in raise_
+    raise exception
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/pool/base.py", line 673, in __connect
+    self.dbapi_connection = connection = pool._invoke_creator(self)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/create.py", line 578, in connect
+    return dialect.connect(*cargs, **cparams)
+  File "/usr/local/lib/python3.8/site-packages/sqlalchemy/engine/default.py", line 598, in connect
+    return self.dbapi.connect(*cargs, **cparams)
+  File "/usr/local/lib/python3.8/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+sqlalchemy.exc.OperationalError: (psycopg2.OperationalError) could not translate host name "db" to address: Temporary failure in name resolution
+
+(Background on this error at: https://sqlalche.me/e/14/e3q8)
+
+2022-12-11 10:58:34,312 Application startup failed. Exiting.
+2022-12-11 11:37:44,849 metadata is MetaData()
+2022-12-11 11:37:45,415 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-11 11:37:45,416 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-11 11:37:45,417 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-11 11:37:45,722 Started server process [8]
+2022-12-11 11:37:45,728 Waiting for application startup.
+2022-12-11 11:37:45,895 select pg_catalog.version()
+2022-12-11 11:37:45,896 [raw sql] {}
+2022-12-11 11:37:45,908 select current_schema()
+2022-12-11 11:37:45,909 [raw sql] {}
+2022-12-11 11:37:45,924 show standard_conforming_strings
+2022-12-11 11:37:45,925 [raw sql] {}
+2022-12-11 11:37:45,929 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-11 11:37:45,932 [generated in 0.00260s] {'schema': 'citation_network'}
+2022-12-11 11:37:45,963 BEGIN (implicit)
+2022-12-11 11:37:45,965 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:45,968 [generated in 0.00262s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-11 11:37:45,979 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:45,980 [cached since 0.01447s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-11 11:37:45,992 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:45,994 [cached since 0.02903s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-11 11:37:46,000 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,008 [cached since 0.04266s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-11 11:37:46,014 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,020 [cached since 0.05456s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-11 11:37:46,027 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,029 [cached since 0.06402s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-11 11:37:46,041 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,046 [cached since 0.0804s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-11 11:37:46,053 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,059 [cached since 0.09392s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-11 11:37:46,065 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,071 [cached since 0.1057s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-11 11:37:46,076 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,086 [cached since 0.1208s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-11 11:37:46,093 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,094 [cached since 0.1287s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-11 11:37:46,097 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,104 [cached since 0.139s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-11 11:37:46,110 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,112 [cached since 0.147s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-11 11:37:46,116 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,117 [cached since 0.1519s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-11 11:37:46,120 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,121 [cached since 0.1561s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-11 11:37:46,125 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 11:37:46,126 [cached since 0.161s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-11 11:37:46,129 COMMIT
+2022-12-11 11:37:46,139 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-11 11:37:46,141 [generated in 0.00172s] {'schema': 'public'}
+2022-12-11 11:37:46,160  table names are []
+2022-12-11 11:37:46,160 Application startup complete.
+2022-12-11 12:43:35,810 Shutting down
+2022-12-11 12:43:35,943 Waiting for application shutdown.
+2022-12-11 12:43:35,953 Application shutdown complete.
+2022-12-11 12:43:35,962 Finished server process [8]
+2022-12-11 12:43:44,761 metadata is MetaData()
+2022-12-11 12:43:45,249 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-11 12:43:45,250 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-11 12:43:45,251 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-11 12:43:45,425 Started server process [13]
+2022-12-11 12:43:45,427 Waiting for application startup.
+2022-12-11 12:43:45,492 select pg_catalog.version()
+2022-12-11 12:43:45,493 [raw sql] {}
+2022-12-11 12:43:45,499 select current_schema()
+2022-12-11 12:43:45,500 [raw sql] {}
+2022-12-11 12:43:45,508 show standard_conforming_strings
+2022-12-11 12:43:45,509 [raw sql] {}
+2022-12-11 12:43:45,512 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-11 12:43:45,514 [generated in 0.00122s] {'schema': 'citation_network'}
+2022-12-11 12:43:45,545 BEGIN (implicit)
+2022-12-11 12:43:45,547 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,548 [generated in 0.00125s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-11 12:43:45,552 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,553 [cached since 0.00669s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-11 12:43:45,562 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,563 [cached since 0.01601s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-11 12:43:45,565 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,569 [cached since 0.02192s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-11 12:43:45,580 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,582 [cached since 0.03502s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-11 12:43:45,584 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,585 [cached since 0.03867s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-11 12:43:45,589 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,590 [cached since 0.04347s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-11 12:43:45,597 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,598 [cached since 0.05174s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-11 12:43:45,601 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,606 [cached since 0.0591s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-11 12:43:45,608 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,614 [cached since 0.0669s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-11 12:43:45,616 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,617 [cached since 0.0706s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-11 12:43:45,620 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,621 [cached since 0.07433s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-11 12:43:45,627 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,628 [cached since 0.08178s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-11 12:43:45,632 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,648 [cached since 0.1017s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-11 12:43:45,655 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,659 [cached since 0.1125s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-11 12:43:45,664 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:43:45,666 [cached since 0.1195s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-11 12:43:45,670 COMMIT
+2022-12-11 12:43:45,675 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-11 12:43:45,678 [generated in 0.00294s] {'schema': 'public'}
+2022-12-11 12:43:45,684  table names are []
+2022-12-11 12:43:45,685 Application startup complete.
+2022-12-11 12:44:33,451 app.api.main called
+2022-12-11 12:44:33,452 Session starting...
+2022-12-11 12:44:33,453 app.api.crud called
+2022-12-11 12:44:33,463 registered 'sha256_crypt' handler: <class 'passlib.handlers.sha2_crypt.sha256_crypt'>
+2022-12-11 12:44:33,464 app.api.crud called
+2022-12-11 12:44:33,545 BEGIN (implicit)
+2022-12-11 12:44:33,552 SELECT citation_network."user".id AS citation_network_user_id, citation_network."user".login AS citation_network_user_login, citation_network."user".password_hash AS citation_network_user_password_hash, citation_network."user".author_id AS citation_network_user_author_id, citation_network."user".email AS citation_network_user_email 
+FROM citation_network."user" 
+WHERE citation_network."user".login = %(login_1)s 
+ LIMIT %(param_1)s
+2022-12-11 12:44:33,554 [generated in 0.00236s] {'login_1': 'belyash1', 'param_1': 1}
+2022-12-11 12:44:34,727 Session ending...
+2022-12-11 12:44:34,728 ROLLBACK
+2022-12-11 12:44:34,732 Exception in ASGI application
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.8/site-packages/uvicorn/protocols/http/h11_impl.py", line 404, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/usr/local/lib/python3.8/site-packages/uvicorn/middleware/proxy_headers.py", line 78, in __call__
+    return await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.8/site-packages/fastapi/applications.py", line 270, in __call__
+    await super().__call__(scope, receive, send)
+  File "/usr/local/lib/python3.8/site-packages/starlette/applications.py", line 124, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/usr/local/lib/python3.8/site-packages/starlette/middleware/errors.py", line 184, in __call__
+    raise exc
+  File "/usr/local/lib/python3.8/site-packages/starlette/middleware/errors.py", line 162, in __call__
+    await self.app(scope, receive, _send)
+  File "/usr/local/lib/python3.8/site-packages/starlette/middleware/exceptions.py", line 75, in __call__
+    raise exc
+  File "/usr/local/lib/python3.8/site-packages/starlette/middleware/exceptions.py", line 64, in __call__
+    await self.app(scope, receive, sender)
+  File "/usr/local/lib/python3.8/site-packages/fastapi/middleware/asyncexitstack.py", line 21, in __call__
+    raise e
+  File "/usr/local/lib/python3.8/site-packages/fastapi/middleware/asyncexitstack.py", line 18, in __call__
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.8/site-packages/starlette/routing.py", line 680, in __call__
+    await route.handle(scope, receive, send)
+  File "/usr/local/lib/python3.8/site-packages/starlette/routing.py", line 275, in handle
+    await self.app(scope, receive, send)
+  File "/usr/local/lib/python3.8/site-packages/starlette/routing.py", line 65, in app
+    response = await func(request)
+  File "/usr/local/lib/python3.8/site-packages/fastapi/routing.py", line 231, in app
+    raw_response = await run_endpoint_function(
+  File "/usr/local/lib/python3.8/site-packages/fastapi/routing.py", line 162, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/usr/local/lib/python3.8/site-packages/starlette/concurrency.py", line 41, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func, *args)
+  File "/usr/local/lib/python3.8/site-packages/anyio/to_thread.py", line 31, in run_sync
+    return await get_asynclib().run_sync_in_worker_thread(
+  File "/usr/local/lib/python3.8/site-packages/anyio/_backends/_asyncio.py", line 937, in run_sync_in_worker_thread
+    return await future
+  File "/usr/local/lib/python3.8/site-packages/anyio/_backends/_asyncio.py", line 867, in run
+    result = context.run(func, *args)
+  File "/backend/./app/api/main.py", line 82, in register_user
+    new_user = crud.try_add_user(db, login, password, email)
+  File "/backend/./app/api/crud.py", line 124, in try_add_user
+    new_author = create_author(db, schemas.AuthorBase())
+  File "pydantic/main.py", line 342, in pydantic.main.BaseModel.__init__
+pydantic.error_wrappers.ValidationError: 2 validation errors for AuthorBase
+name
+  field required (type=value_error.missing)
+orgs
+  field required (type=value_error.missing)
+2022-12-11 12:46:03,809 Shutting down
+2022-12-11 12:46:03,911 Waiting for application shutdown.
+2022-12-11 12:46:03,912 Application shutdown complete.
+2022-12-11 12:46:03,914 Finished server process [13]
+2022-12-11 12:46:10,642 metadata is MetaData()
+2022-12-11 12:46:11,111 loaded lazy attr 'SafeConfigParser': <class 'configparser.ConfigParser'>
+2022-12-11 12:46:11,111 loaded lazy attr 'NativeStringIO': <class '_io.StringIO'>
+2022-12-11 12:46:11,112 loaded lazy attr 'BytesIO': <class '_io.BytesIO'>
+2022-12-11 12:46:11,312 Started server process [19]
+2022-12-11 12:46:11,315 Waiting for application startup.
+2022-12-11 12:46:11,334 select pg_catalog.version()
+2022-12-11 12:46:11,336 [raw sql] {}
+2022-12-11 12:46:11,340 select current_schema()
+2022-12-11 12:46:11,341 [raw sql] {}
+2022-12-11 12:46:11,344 show standard_conforming_strings
+2022-12-11 12:46:11,349 [raw sql] {}
+2022-12-11 12:46:11,355 select nspname from pg_namespace where lower(nspname)=%(schema)s
+2022-12-11 12:46:11,360 [generated in 0.00497s] {'schema': 'citation_network'}
+2022-12-11 12:46:11,365 BEGIN (implicit)
+2022-12-11 12:46:11,371 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,372 [generated in 0.00474s] {'schema': 'citation_network', 'name': 'text_keywords'}
+2022-12-11 12:46:11,376 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,377 [cached since 0.0103s ago] {'schema': 'citation_network', 'name': 'text_author'}
+2022-12-11 12:46:11,380 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,382 [cached since 0.01483s ago] {'schema': 'citation_network', 'name': 'text_fos'}
+2022-12-11 12:46:11,395 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,398 [cached since 0.03051s ago] {'schema': 'citation_network', 'name': 'org_author'}
+2022-12-11 12:46:11,400 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,402 [cached since 0.03513s ago] {'schema': 'citation_network', 'name': 'text_tags'}
+2022-12-11 12:46:11,406 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,407 [cached since 0.03981s ago] {'schema': 'citation_network', 'name': 'text'}
+2022-12-11 12:46:11,409 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,410 [cached since 0.04338s ago] {'schema': 'citation_network', 'name': 'citation'}
+2022-12-11 12:46:11,413 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,415 [cached since 0.04832s ago] {'schema': 'citation_network', 'name': 'keywords'}
+2022-12-11 12:46:11,428 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,432 [cached since 0.06528s ago] {'schema': 'citation_network', 'name': 'author'}
+2022-12-11 12:46:11,447 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,449 [cached since 0.08167s ago] {'schema': 'citation_network', 'name': 'fos'}
+2022-12-11 12:46:11,452 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,454 [cached since 0.08693s ago] {'schema': 'citation_network', 'name': 'org'}
+2022-12-11 12:46:11,458 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,459 [cached since 0.09151s ago] {'schema': 'citation_network', 'name': 'user'}
+2022-12-11 12:46:11,461 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,462 [cached since 0.09536s ago] {'schema': 'citation_network', 'name': 'tags'}
+2022-12-11 12:46:11,465 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,469 [cached since 0.102s ago] {'schema': 'citation_network', 'name': 'search_history'}
+2022-12-11 12:46:11,472 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,475 [cached since 0.1075s ago] {'schema': 'citation_network', 'name': 'articles_opened'}
+2022-12-11 12:46:11,493 select relname from pg_class c join pg_namespace n on n.oid=c.relnamespace where n.nspname=%(schema)s and relname=%(name)s
+2022-12-11 12:46:11,494 [cached since 0.1268s ago] {'schema': 'citation_network', 'name': 'articles_rated'}
+2022-12-11 12:46:11,497 COMMIT
+2022-12-11 12:46:11,507 SELECT c.relname FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = %(schema)s AND c.relkind in ('r', 'p')
+2022-12-11 12:46:11,508 [generated in 0.00190s] {'schema': 'public'}
+2022-12-11 12:46:11,514  table names are []
+2022-12-11 12:46:11,516 Application startup complete.
+2022-12-11 12:46:11,824 app.api.main called
+2022-12-11 12:46:11,833 Session starting...
+2022-12-11 12:46:11,842 app.api.crud called
+2022-12-11 12:46:11,845 registered 'sha256_crypt' handler: <class 'passlib.handlers.sha2_crypt.sha256_crypt'>
+2022-12-11 12:46:11,850 app.api.crud called
+2022-12-11 12:46:11,987 BEGIN (implicit)
+2022-12-11 12:46:12,002 SELECT citation_network."user".id AS citation_network_user_id, citation_network."user".login AS citation_network_user_login, citation_network."user".password_hash AS citation_network_user_password_hash, citation_network."user".author_id AS citation_network_user_author_id, citation_network."user".email AS citation_network_user_email 
+FROM citation_network."user" 
+WHERE citation_network."user".login = %(login_1)s 
+ LIMIT %(param_1)s
+2022-12-11 12:46:12,006 [generated in 0.00349s] {'login_1': 'belyash1', 'param_1': 1}
+2022-12-11 12:46:12,899 app.api.crud called
+2022-12-11 12:46:12,916 app.api.crud called
+2022-12-11 12:46:12,921 INSERT INTO citation_network.author (id, name) VALUES (%(id)s, %(name)s)
+2022-12-11 12:46:12,922 [generated in 0.00151s] {'id': UUID('cb5757e4-7951-11ed-8158-0242ac120003'), 'name': ''}
+2022-12-11 12:46:12,962 COMMIT
+2022-12-11 12:46:12,977 BEGIN (implicit)
+2022-12-11 12:46:12,981 SELECT citation_network.author.id, citation_network.author.name 
+FROM citation_network.author 
+WHERE citation_network.author.id = %(pk_1)s
+2022-12-11 12:46:12,983 [generated in 0.00135s] {'pk_1': UUID('cb5757e4-7951-11ed-8158-0242ac120003')}
+2022-12-11 12:46:12,997 INSERT INTO citation_network."user" (id, login, password_hash, author_id, email) VALUES (%(id)s, %(login)s, %(password_hash)s, %(author_id)s, %(email)s)
+2022-12-11 12:46:12,998 [generated in 0.00165s] {'id': UUID('cb639c20-7951-11ed-8158-0242ac120003'), 'login': 'belyash1', 'password_hash': '$5$rounds=535000$BBsouD8rdEpt6u.F$fMcKKJiPmUbVRGND5c38EpEcDr3sF2L/CQ6n0UCdoOA', 'author_id': UUID('cb5757e4-7951-11ed-8158-0242ac120003'), 'email': 'belyash1@mail.ru'}
+2022-12-11 12:46:13,014 COMMIT
+2022-12-11 12:46:13,020 BEGIN (implicit)
+2022-12-11 12:46:13,025 SELECT citation_network."user".id AS citation_network_user_id, citation_network."user".login AS citation_network_user_login, citation_network."user".password_hash AS citation_network_user_password_hash, citation_network."user".author_id AS citation_network_user_author_id, citation_network."user".email AS citation_network_user_email 
+FROM citation_network."user" 
+WHERE citation_network."user".id = %(pk_1)s
+2022-12-11 12:46:13,027 [generated in 0.00199s] {'pk_1': UUID('cb639c20-7951-11ed-8158-0242ac120003')}
+2022-12-11 12:46:13,031 new user with id cb639c20-7951-11ed-8158-0242ac120003 is created
+2022-12-11 12:46:13,032 Session ending...
+2022-12-11 12:46:13,038 ROLLBACK
+2022-12-11 12:46:13,055 app.api.main called
+2022-12-11 12:46:13,059 Session starting...
+2022-12-11 12:46:13,060 app.api.crud called
+2022-12-11 12:46:13,062 BEGIN (implicit)
+2022-12-11 12:46:13,066 SELECT citation_network.text.id AS citation_network_text_id, citation_network.text.title AS citation_network_text_title, citation_network.text.year AS citation_network_text_year, citation_network.text.n_citation AS citation_network_text_n_citation, citation_network.text.abstract AS citation_network_text_abstract, citation_network.text.venue_name AS citation_network_text_venue_name 
+FROM citation_network.text 
+ LIMIT %(param_1)s OFFSET %(param_2)s
+2022-12-11 12:46:13,067 [generated in 0.00091s] {'param_1': 10, 'param_2': 0}
+2022-12-11 12:46:13,199 Session ending...
+2022-12-11 12:46:13,200 ROLLBACK
+2022-12-11 12:47:51,051 Shutting down
+2022-12-11 12:47:51,154 Waiting for application shutdown.
+2022-12-11 12:47:51,155 Application shutdown complete.
+2022-12-11 12:47:51,156 Finished server process [19]
+2022-12-11 12:47:57,400 metadata is MetaData()
