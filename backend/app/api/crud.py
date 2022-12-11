@@ -393,7 +393,7 @@ def create_citation(db: Session, citation: schemas.Citation):
 
 
 def get_search(
-    db: Session, tag: str = "", author: str = "", venue_name: str = "", year:str = "-1"
+    db: Session, tag: str = "", author: str = "", venue_name: str = "", year:str = ""
 ):
     ans_list = []
 
@@ -409,13 +409,6 @@ def get_search(
         author = "<!?*>"
     if venue_name == "":
         venue_name = "<!?*>"
-    if year == "":
-        year = -1
-    else:
-        try:
-            year = int(year)
-        except:
-            return set()
 
     search_filter(ans_list, models.Text.authors.any(name=author))
     search_filter(ans_list, models.Text.venue_name.contains(venue_name))
