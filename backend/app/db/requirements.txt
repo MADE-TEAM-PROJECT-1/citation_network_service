@@ -1,3 +1,0 @@
-pandas==1.2.4
-sqlalchemy==1.4.22
-gdown==4.5.1

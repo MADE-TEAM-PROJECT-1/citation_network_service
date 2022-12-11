@@ -1,5 +1,34 @@
 version: '3.8'
+
+networks:
+  isolation-network:
+    driver: bridge
+
 services:
+  classification_inference:
+    build:
+      context: ./classification_inference
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8088
+    ports:
+      - 8088:8088
+    depends_on:
+      - server
+    restart: always
+    networks:
+      - isolation-network
+  recsys_inference:
+    build:
+      context: ./recsys_inference
+      dockerfile: Dockerfile
+    command: uvicorn app.main:app --reload --workers 1 --host 0.0.0.0 --port 8080
+    ports:
+      - 8080:8080
+    depends_on:
+      - server
+    restart: always
+    networks:
+      - isolation-network
   server:
     build:
       context: ./backend
@@ -15,6 +44,8 @@ services:
       db:
         condition: service_healthy
     restart: always
+    networks:
+      - isolation-network
   db:
     image: postgres:13-alpine
     volumes:
@@ -29,5 +60,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - isolation-network
 volumes:
   postgres_data:

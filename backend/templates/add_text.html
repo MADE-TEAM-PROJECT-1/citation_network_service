@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" class="h-100">
+
+<head>
+    <title> Add article </title>
+
+
+
+    <link href="{{ url_for('static', path='/css/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+
+    <div class="container-md">
+        <form action="http://localhost:8000/text/add_raw" method="POST">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Title</label>
+                <input class="form-control" name="title" placeholder="Salmon and plants. Plants and salmon">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Keywords</label>
+                <input class="form-control" name="keywords" placeholder="plants, salmon">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Fields of study</label>
+                <input class="form-control" name="fos" placeholder="physics, biology">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Year</label>
+                <input class="form-control" name="year" placeholder="1999">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Venue</label>
+                <input class="form-control" name="venue" placeholder="Nature vol. 1">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Abstract</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="abstract" ,
+                    placeholder="A few words about salmon and plants"></textarea>
+            </div>
+            <button class="w-100 btn btn-lg mt-2 btn-success" type="submit">Create article</button>
+        </form>
+    </div>

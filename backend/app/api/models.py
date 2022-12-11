@@ -1,7 +1,7 @@
 from email.policy import default
 from uuid import uuid1
 from sqlalchemy.dialects.postgresql import UUID
-from sqlalchemy import Boolean, Integer, Column, ForeignKey, String, Table
+from sqlalchemy import Boolean, Integer, Column, ForeignKey, String, Table, Date
 from sqlalchemy.orm import relationship
 from sqlalchemy.ext.associationproxy import association_proxy
 from app.api.database import Base
@@ -14,7 +14,6 @@ text_keywords = Table(
     Column("text_id", ForeignKey("text.id")),
     Column("keyword_id", ForeignKey("keywords.id")),
 )
-
 
 text_author = Table(
     "text_author",
@@ -43,6 +42,15 @@ org_author = Table(
     schema="citation_network",
 )
 
+text_tags = Table(
+    "text_tags",
+    Base.metadata,
+    Column("tag_text_id", UUID(as_uuid=True), primary_key=True, default=uuid1),
+    Column("tag_id", ForeignKey("tags.id")),
+    Column("text_id", ForeignKey("text.id")),
+    schema="citation_network",
+)
+
 
 class Text(Base):
     __tablename__ = "text"
@@ -58,6 +66,7 @@ class Text(Base):
     keywords = relationship("Keyword", secondary=text_keywords, back_populates="texts", )
     authors = relationship("Author", secondary=text_author, back_populates="texts")
     fos = relationship("Fos", secondary=text_fos, back_populates="texts")
+    tags = relationship("Tags", secondary=text_tags, back_populates="texts")
 
 
 class Citation(Base):
@@ -114,3 +123,72 @@ class Org(Base):
     name = Column(String)
 
     authors = relationship("Author", secondary=org_author, back_populates="orgs")
+
+class User(Base):
+    __tablename__ = "user"
+    __table_args__ = {"schema": "citation_network"}
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+
+    login = Column(String, index = True, unique=True, nullable=False)
+    password_hash = Column(String, nullable=False)
+    author_id = Column(UUID(as_uuid=True), ForeignKey("author.id"))
+    email = Column(String)
+
+class Tags(Base):
+    __tablename__ = "tags"
+    __table_args__ = {"schema": "citation_network"}
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+    name = Column(String, unique=True, index=True)
+
+    texts = relationship("Text", secondary=text_tags, back_populates="tags")
+
+class SearchHistory(Base):
+    __tablename__ = "search_history"
+    __table_args__ = {"schema": "citation_network"}
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+    user_id = Column(UUID(as_uuid=True), ForeignKey("user.id"), nullable=True)
+
+    request_date = Column(Date)
+    search_tag = Column(String, nullable = True, default = "") 
+    author = Column(String, nullable = True, default = "")
+    venue_name = Column(String, nullable = True, default = "")
+    year = Column(Integer, nullable = True, default = 0)
+
+class ArticlesOpened(Base):
+    __tablename__ = "articlesopened"
+    __table_args__ = {"schema": "citation_network"}
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+
+    user_id =  Column(UUID(as_uuid=True), ForeignKey("user.id"))
+    text_id =  Column(UUID(as_uuid=True), ForeignKey("text.id"))   
+    request_date = Column(Date)
+
+ArticlesRated = Table(
+    "articles_rated",
+    Base.metadata,
+    Column("id", UUID(as_uuid=True), primary_key=True, default=uuid1),
+    Column("user_id", ForeignKey("user.id")),
+    Column("text_id", ForeignKey("text.id")),
+    Column("request_date", Date),
+    Column("mark",Integer),
+    schema="citation_network",
+)
+
+class ArticlesRated(Base):
+    __tablename__ = "articlerated"
+    __table_args__ = {"schema": "citation_network"}
+
+    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
+
+    user_id =  Column(UUID(as_uuid=True), ForeignKey("user.id"))
+    text_id =  Column(UUID(as_uuid=True), ForeignKey("text.id"))
+    request_date = Column(Date)
+    mark = Column(Integer, nullable=True)
+
+    
+
+
+

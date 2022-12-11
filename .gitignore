@@ -1,5 +1,8 @@
-/venv/
+venv/
 __pycache__
 .vscode/
 
+log.txt
+
 .env
+.DS_Store
