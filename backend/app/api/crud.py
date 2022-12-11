@@ -393,32 +393,37 @@ def create_citation(db: Session, citation: schemas.Citation):
 
 
 def get_search(
-    db: Session, tag: str = "", author: str = "", venue_name: str = "", year: str = ""
+    db: Session, tag: str = "", author: str = "", venue_name: str = "", year:str = "-1"
 ):
     ans_list = []
 
     def search_filter(answers, params):
-        ans = db.query(models.Text).filter(params).limit(20).all()
+        ans = db.query(models.Text).filter(params).all()
         for item in ans:
             answers.append(item)
         return answers
 
+    if tag == "":
+        tag = "<!?*>"
+    if author == "":
+        author = "<!?*>"
     if venue_name == "":
         venue_name = "<!?*>"
     if year == "":
-        year = 0
+        year = -1
     else:
         try:
             year = int(year)
         except:
             return set()
 
-    search_filter(ans_list, models.Text.tags.any(name=tag))
     search_filter(ans_list, models.Text.authors.any(name=author))
     search_filter(ans_list, models.Text.venue_name.contains(venue_name))
-    search_filter(ans_list, models.Text.year == year)
+    search_filter(ans_list, models.Text.year==year)
+    if ans_list == []:
+        search_filter(ans_list, models.Text.tags.any(name=tag))
 
-    result = set(sorted(ans_list, key=Counter(ans_list).get, reverse=True))
+    result = list(Counter(ans_list).keys())[:20]
     return result
 
 
