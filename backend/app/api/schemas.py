@@ -118,6 +118,7 @@ class UserRegistration(BaseModel):
 
 
 class SearchResults(BaseModel):
+    id: Optional[UUID] = Field(default_factory=uuid1)
     title: str
     year: int
     abstract: str
