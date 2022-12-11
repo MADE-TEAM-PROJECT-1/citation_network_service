@@ -12,19 +12,24 @@ from sqlalchemy.orm import Session
 from app.core.config import SCHEMA_NAME, LOGS_DIR, LOGS_MESSAGE_FORMAT
 from sqlalchemy import select
 
-logging.basicConfig(filename=LOGS_DIR, level=logging.DEBUG, format=LOGS_MESSAGE_FORMAT, filemode="a+")
+logging.basicConfig(
+    filename=LOGS_DIR, level=logging.DEBUG, format=LOGS_MESSAGE_FORMAT, filemode="a+"
+)
+
 
 def get_cur_date() -> date:
     return date.today()
+
 
 def make_dict(data: List[schemas.TextInput]):
     rows = []
     for a in data:
         q = a.__dict__
-        q['authors'] = [author.__dict__ for author in q['authors']]
+        q["authors"] = [author.__dict__ for author in q["authors"]]
         rows.append(q)
-    df =  pd.DataFrame.from_records(rows)
+    df = pd.DataFrame.from_records(rows)
     return df
+
 
 class Hasher:
     def __init__(self):
@@ -43,35 +48,50 @@ def get_search_loggs(db: Session, user_id: UUID, limit: int = 10):
     logging.info(f"{__name__} called")
 
     answers = []
-    ans = db.query(models.SearchHistory).filter(models.SearchHistory.user_id == user_id).limit(limit)
+    ans = (
+        db.query(models.SearchHistory)
+        .filter(models.SearchHistory.user_id == user_id)
+        .limit(limit)
+    )
     for item in ans:
-                logging.info(f"items are {item}")
-                answers.append(item)
+        logging.info(f"items are {item}")
+        answers.append(item)
     result = set(sorted(answers, key=Counter(answers).get, reverse=True))
     return result
 
 
-
-def create_stored_search(db: Session, user_id : UUID, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
+def create_stored_search(
+    db: Session,
+    user_id: UUID,
+    tag: str = "",
+    author: str = "",
+    venue_name: str = "",
+    year: str = "",
+):
     logging.info(f"{__name__} called")
     logging.info(f"currrent date is {get_cur_date()}")
-    new_stored_search=models.SearchHistory(
+    new_stored_search = models.SearchHistory(
         user_id=user_id,
         request_date=get_cur_date(),
         search_tag=tag,
         author=author,
         venue_name=venue_name,
-        year=int(year)
-   )
+        year=int(year),
+    )
     db.add(new_stored_search)
     db.commit()
     db.refresh(new_stored_search)
 
     return new_stored_search
 
+
 def get_search(db: Session, search_id: UUID):
     logging.info(f"{__name__} called")
-    search = db.query(models.SearchHistory).filter(models.SearchHistory.id == search_id).first()
+    search = (
+        db.query(models.SearchHistory)
+        .filter(models.SearchHistory.id == search_id)
+        .first()
+    )
 
     if search is None:
         raise HTTPException(
@@ -371,7 +391,9 @@ def create_citation(db: Session, citation: schemas.Citation):
     return new_citation
 
 
-def get_search(db: Session, tag: str = "", author: str = "", venue_name: str = "", year:str = ""):
+def get_search(
+    db: Session, tag: str = "", author: str = "", venue_name: str = "", year: str = ""
+):
     ans_list = []
 
     def search_filter(answers, params):
@@ -393,7 +415,7 @@ def get_search(db: Session, tag: str = "", author: str = "", venue_name: str = "
     search_filter(ans_list, models.Text.tags.any(name=tag))
     search_filter(ans_list, models.Text.authors.any(name=author))
     search_filter(ans_list, models.Text.venue_name.contains(venue_name))
-    search_filter(ans_list, models.Text.year==year)
+    search_filter(ans_list, models.Text.year == year)
 
     result = set(sorted(ans_list, key=Counter(ans_list).get, reverse=True))
     return result
@@ -421,3 +443,25 @@ def add_text(db: Session, text: schemas.TextInput):
     db.refresh(new_text)
 
     return new_text.id
+
+
+def get_similar_objects(ids: List[UUID]):
+    neighbors_ids = requests.post(
+        url="http://recsys_inference:8080/get_neighbors/",
+        json={"id": ids},
+    ).json()["neighbors"]
+
+    return neighbors_ids
+
+
+def get_article_recomendation(db: Session, user_id: UUID):
+    articles_opened = (
+        db.query(models.ArticlesOpened)
+        .filter(models.ArticlesOpened.c.user_id == user_id)
+        .with_entities(models.ArticlesOpened.c.text_id)
+        .distinct(models.ArticlesOpened.c.text_id)
+        .limit(5)
+        .all()
+    )
+
+    return get_similar_objects([article.text_id for article in articles_opened])

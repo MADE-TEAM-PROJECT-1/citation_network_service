@@ -10,14 +10,14 @@ import dill
 from datetime import datetime
 
 
-# url = (
-#     "https://drive.google.com/file/d/1yjeG6-kIpjoxFA75M5wUuHlsmJhpGnfw/view?usp=sharing"
-# )
-# gdown.download(url=url, output="data.zip", quiet=False, fuzzy=True)
+url = (
+    "https://drive.google.com/file/d/1yjeG6-kIpjoxFA75M5wUuHlsmJhpGnfw/view?usp=sharing"
+)
+gdown.download(url=url, output="data.zip", quiet=False, fuzzy=True)
 
-# with ZipFile("data.zip", "r") as zip_file:
-#     zip_file.extractall()
-# os.remove("data.zip")
+with ZipFile("data.zip", "r") as zip_file:
+    zip_file.extractall()
+os.remove("data.zip")
 
 engine = create_engine("postgresql://postgres:postgres@0.0.0.0:5432/postgres")
 
@@ -29,7 +29,7 @@ for i in range(1, 4):
 
 df = df.rename(columns={"venue": "venue_name"})
 df["venue_name"] = df["venue_name"].apply(lambda x: list(x.values())[0])
-df = df.sample(frac=0.1, random_state=42)
+# df = df.sample(frac=0.1, random_state=42)
 
 print(datetime.now(), 'filling in the table "text"')
 # filling in the table "text"
@@ -79,6 +79,7 @@ text_autor_df.to_sql(
     schema="citation_network",
     if_exists="append",
     index=False,
+    chunksize=100,
 )
 
 print(datetime.now(), 'filling in the table "org"')

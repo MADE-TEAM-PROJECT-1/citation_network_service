@@ -3,12 +3,14 @@ from pydantic import BaseModel, Field
 from datetime import date, datetime, time
 from uuid import UUID, uuid1
 
+
 class Keyword(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
     name: str
 
     class Config:
         orm_mode = True
+
 
 class Fos(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
@@ -25,6 +27,7 @@ class Org(BaseModel):
     class Config:
         orm_mode = True
 
+
 class Tag(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
     name: str
@@ -32,9 +35,19 @@ class Tag(BaseModel):
     class Config:
         orm_mode = True
 
+
 class AuthorBase(BaseModel):
     name: str
     orgs: List[Org]
+
+
+class TextRaw(BaseModel):
+    title: str
+    year: int
+    keywords: str
+    fos: str
+    abstract: str
+    venue: str
 
 
 class Author(AuthorBase):
@@ -58,14 +71,16 @@ class TextInput(BaseModel):
     class Config:
         orm_mode = True
 
+
 class TextBase(BaseModel):
     title: str
     year: int
     abstract: str
     venue_name: str
-    keywords: List[Keyword] 
+    keywords: List[Keyword]
     authors: List[Author]
     fos: List[Fos]
+
 
 class Text(TextBase):
     id: Optional[UUID] = Field(default_factory=uuid1)
@@ -82,12 +97,13 @@ class Citation(BaseModel):
     class Config:
         orm_mode = True
 
+
 class User(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
     login: str
     password_hash: str
     email: str
-    author_id = UUID 
+    author_id = UUID
 
     class Config:
         orm_mode = True
@@ -99,6 +115,7 @@ class UserRegistration(BaseModel):
     login: str
     email: str
     password: str
+
 
 class SearchResults(BaseModel):
     title: str
@@ -113,17 +130,19 @@ class SearchResults(BaseModel):
     class Config:
         orm_mode = True
 
+
 class SearchHistory(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
     user_id: Optional[UUID] = Field(default_factory=uuid1, nullable=True)
     request_date: date
-    search_tag: str 
+    search_tag: str
     author: str
-    venue_name: str 
+    venue_name: str
     year: int
 
-    class Config: 
+    class Config:
         orm_mode = True
+
 
 class ArticlesOpened(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
@@ -131,19 +150,16 @@ class ArticlesOpened(BaseModel):
     text_id: Optional[UUID] = Field(default_factory=uuid1)
     request_date: date
 
-    class Config: 
+    class Config:
         orm_mode = True
+
 
 class ArticlesRated(BaseModel):
     id: Optional[UUID] = Field(default_factory=uuid1)
     user_id: Optional[UUID] = Field(default_factory=uuid1)
     text_id: Optional[UUID] = Field(default_factory=uuid1)
     request_date: date
-    mark : Literal[0, 1, 2, 3, 4, 5]
+    mark: Literal[0, 1, 2, 3, 4, 5]
 
     class Config:
         orm_nodel = True
-
-
-
-
