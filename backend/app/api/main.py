@@ -287,6 +287,10 @@ def search_request(
     year: str = "",
 ):
     logging.info(f"{__name__} called")
+    try:
+        year = int(year)
+    except:
+        year = -1
     with SessionManager() as db:
         global current_user_id
         logging.info(f"current_user_id is {current_user_id}")
