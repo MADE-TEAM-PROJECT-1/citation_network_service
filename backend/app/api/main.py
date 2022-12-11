@@ -89,6 +89,7 @@ def register_user(request: Request, login: str, password: str, email: str):
         global current_user_id
         current_user_id = new_user.id
         logging.info(f"new user with id {new_user.id} is created")
+        logging.info(f"new user with id {current_user_id} is created")
         return RedirectResponse("/texts/")
 
 
@@ -312,45 +313,6 @@ def create_text(text: schemas.TextBase):
 def add_text_page(request: Request):
     logging.info(f"{__name__} called")
     return templates.TemplateResponse("add_text.html", {"request": request})
-
-
-# @app.post("/text/add_raw", status_code=status.HTTP_200_OK)
-# def add_text(
-#     title: str = Form(),
-#     year: int = Form(),
-#     abstract: str = Form(),
-#     venue: str = Form(),
-#     keywords: str = Form(),
-#     fos: str = Form,
-# ):
-
-#     logging.info(f"{__name__} called")
-
-#     with SessionManager() as db:
-#         author_id = (
-#             db.query(models.User)
-#             .filter(models.User.id == current_user_id)
-#             .with_entities(models.User.author_id)
-#             .first()
-#             .author_id
-#         )
-#         author = get_author(
-#             db.query(models.Author).filter(models.Author.id == author_id)
-#         )
-#         text = schemas.TextBase(
-#             title=title,
-#             year=year,
-#             abstract=abstract,
-#             venue_name=venue,
-#             keywords=keywords.split(", "),
-#             fos=fos.split(", "),
-#             authors=[author],
-#         )
-#         new_text_id = str(crud.create_text(db, text).id)
-#         return RedirectResponse(
-#             f"/text/?text_id={new_text_id}", status_code=status.HTTP_303_SEE_OTHER
-#         )
-
 
 @app.post("/recomendations/articles", status_code=status.HTTP_200_OK)
 def get_article_recomendation(text_id: UUID):

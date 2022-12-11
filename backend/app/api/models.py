@@ -157,7 +157,7 @@ class SearchHistory(Base):
     year = Column(Integer, nullable = True, default = 0)
 
 class ArticlesOpened(Base):
-    __trablename__ = "articlesopened"
+    __tablename__ = "articlesopened"
     __table_args__ = {"schema": "citation_network"}
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
@@ -178,7 +178,7 @@ ArticlesRated = Table(
 )
 
 class ArticlesRated(Base):
-    __trablename__ = "articlerated"
+    __tablename__ = "articlerated"
     __table_args__ = {"schema": "citation_network"}
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid1)
